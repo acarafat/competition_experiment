@@ -3,7 +3,7 @@ library(ggrepel)
 library(reshape2)
 library(tidyr)
 
-genotype = '/Users/arafat/GDrive/Sachs/Chapter1_Competition/Competition Experiment/AmpliconSeq/Amplicon_Fragments/updated_count_Nov16.csv'
+genotype = '../data/updated_count_Nov16.csv'
 genotype = read.csv(genotype)
 
 # Some nodules were labeled incorrectly. Lets update them (i.e. 184+2 > 2+184, 131+186 > 186+131)
@@ -114,9 +114,9 @@ abundance = dcast(abundance, treatment~class)
 ####################################  
 # Compare observed RG and expected #
 ####################################
-abundance = read.csv( '/Users/arafat/GDrive/Sachs/Chapter1_Competition/Competition Experiment/AmpliconSeq/Amplicon_Fragments/competition_abundanc.csv', header=T)
-mean_RG_coinoc = read.csv( '/Users/arafat/GDrive/Sachs/Chapter1_Competition/Competition_study/GH14_19S/mean_RG_calculation.csv', header=T)
-mean_RG_single = read.csv( '/Users/arafat/GDrive/Sachs/Chapter1_Competition/Competition_study/GH14_19S/mean_RG_single.csv', header=T)
+abundance = read.csv( '../data/competition_abundanc.csv', header=T)
+mean_RG_coinoc = read.csv( '../data/mean_RG_calculation.csv', header=T)
+mean_RG_single = read.csv( '../data/mean_RG_single.csv', header=T)
 
 
 
@@ -240,7 +240,7 @@ RO.se <- c(relative_occupancy(subset.131)[[2]],
               relative_occupancy(subset.2)[[2]],
               relative_occupancy(subset.200)[[2]])
 
-rg <- read.csv('~/GDrive/Sachs/Chapter1_Competition/Competition_study/GH14_19S/mean_RG_calculation.csv')
+rg <- read.csv('../data/mean_RG_calculation.csv')
 
 RG.value <- c(get_mean_var('131', 'RG')[[1]],
               get_mean_var('156', 'RG')[[1]],
@@ -437,7 +437,7 @@ class.summary[which(class.summary$inoculum.chi.p.value >= 0.05),]
 ########################################
 # Prokka gene-presence absence summary #
 ########################################
-pangenome <- read.csv('~/GDrive/Sachs/Chapter1_Competition/Competition_study/Prokka/gene_presence_absence.csv')
+pangenome <- read.csv('../data/gene_presence_absence.csv')
 colnames(pangenome) <- gsub('X', '', colnames(pangenome))
 panmat <- pangenome[, c('Gene', 'Annotation', '131', '156', '184', '186', '187', '2', '200', '4')]
 
