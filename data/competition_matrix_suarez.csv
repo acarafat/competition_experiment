@@ -1,0 +1,129 @@
+,suearez_blast/131.blast.out,suearez_blast/156.blast.out,suearez_blast/184.blast.out,suearez_blast/186.blast.out,suearez_blast/187.blast.out,suearez_blast/2.blast.out,suearez_blast/200.blast.out,suearez_blast/4.blast.out,geneDesc
+BEL01nite_35470,0,0,0,0,0,0,0,0,Bacteriocin 
+BEL01nite_84170,1,1,1,1,1,1,1,1,Bacteriocin cleavage/export ABC transporter 
+Bacteriocin ,0,0,0,1,0,1,1,0,Bacteriocin 
+Bacteriocin (Fragment) ,0,0,0,0,0,0,0,0,Bacteriocin (Fragment) 
+CO671_20605,0,0,0,0,0,0,0,0,Type VI secretion system protein TssA 
+DLJ82_3574,0,0,0,0,0,0,0,0,"Bacteriocin-protection, YdeI or OmpD-Associated family protein "
+GGD63_000726,0,0,0,0,0,0,0,0,Bacteriocin-like protein 
+GHK45_19395,1,1,1,1,0,1,1,1,"Translocation protein in type III secretion system, RhcU "
+HB770_02950,0,0,0,0,0,0,0,0,"Bacteriocin-protection, YdeI/OmpD-Associated family protein "
+HNP83_006659,0,0,0,0,0,0,0,0,ABC-type bacteriocin/lantibiotic exporter with double-glycine peptidase domain 
+RhaD ,0,0,0,0,0,1,0,0,RhaD 
+Rleg5DRAFT_0168,1,1,1,1,1,1,1,1,ABC-type bacteriocin/lantibiotic exporter with N-terminal double-glycine peptidase domain 
+Rleg9DRAFT_0690,1,1,1,1,1,1,1,1,ABC-type bacteriocin/lantibiotic exporter with N-terminal double-glycine peptidase domain 
+SMc02631,0,0,0,0,0,1,0,0,M
+SinmeB_1754,1,1,1,1,1,1,1,1,Acyl carrier protein AcpXL 
+XH89_20920,0,0,0,0,0,0,0,0,ComC/BlpC family peptide pheromone/bacteriocin 
+XH92_28275,0,0,0,0,0,0,0,0,Bacteriocin 
+aapJ,1,1,1,1,1,1,1,1,General L-amino acid-binding periplasmic protein AapJ 
+aapM,1,1,1,1,1,1,1,1,General L-amino acid transport system permease protein AapM 
+aapP,1,1,1,1,1,1,1,1,General L-amino acid transport ATP-binding protein AapP 
+aapQ,1,1,1,1,1,1,1,1,General L-amino acid transport system permease protein AapQ 
+bdhA,1,1,1,1,1,1,1,1,D-beta-hydroxybutyrate dehydrogenase 
+cheA,1,1,1,1,1,1,1,1,Histidine kinase 
+cheD,0,0,0,0,0,0,0,0,Probable chemoreceptor glutamine deamidase CheD 
+dgoK1,1,1,1,1,1,1,1,1,Probable 2-dehydro-3-deoxygalactonokinase DgoK1 
+exoY,1,1,1,1,1,1,1,1,Exopolysaccharide production protein ExoY 
+flgK,0,0,0,1,0,0,1,0,Flagellar hook-associated protein 1 
+glpD,1,1,1,1,1,1,1,1,Glycerol-3-phosphate dehydrogenase 
+glpK,1,1,1,1,1,1,1,1,Glycerol kinase 
+glpP,1,1,1,1,1,1,1,1,GlpP 
+glpQ,1,1,1,1,1,1,1,1,GlpQ 
+glpS,1,1,1,1,1,1,1,1,GlpS 
+glpT,1,1,1,1,1,1,1,1,GlpT 
+glpU,0,0,0,1,0,1,1,1,GlpU 
+glpV,1,1,1,1,1,1,1,1,GlpV 
+glyD,1,1,1,1,1,1,1,1,Glycerol-3-phosphate dehydrogenase 
+hrcS,1,1,1,1,0,0,1,1,HrcS protein 
+impG,1,1,1,0,1,1,0,0,Type VI secretion system baseplate subunit TssF 
+iolC,1,1,1,0,1,0,0,1,Putative sugar kinase 
+iolD,1,1,1,1,1,1,1,1,"3D-(3,5/4)-trihydroxycyclohexane-1,2-dione acylhydrolase (Decyclizing) "
+iolE,0,0,0,0,0,0,1,0,Myo-inosose-2 dehydratase 
+livM,1,1,1,1,1,1,1,1,High-affinity branched-chain amino acid transport system permease 
+lpsB,1,1,1,1,1,1,1,1,Lipopolysaccharide core biosynthesis mannosyltransferase LpsB 
+mocA,0,0,0,0,0,1,0,1,Rhizopine catabolism protein MocA 
+mocB,1,1,1,1,1,1,1,1,Putative rhizopine-binding protein 
+mocC,0,0,0,0,0,0,1,0,Rhizopine catabolism protein MocC 
+mocD,1,1,1,1,1,1,1,1,MocD 
+mocE,1,1,1,1,1,1,1,1,MocE 
+mocR,1,1,1,1,1,1,1,1,Probable rhizopine catabolism regulatory protein MocR 
+mosA,1,1,1,1,1,1,1,1,4-hydroxy-tetrahydrodipicolinate synthase 
+motA,1,0,1,1,0,1,0,1,Flagellar motor stator protein MotA 
+motB,1,1,1,1,1,1,1,1,Motility protein B 
+nodD,1,1,1,1,1,1,1,1,Nodulation protein D 
+nopP,1,1,1,1,0,0,0,1,Effector protein NopP 
+pRL80079,1,1,1,1,1,1,1,1,Putative transcriptional regulator 
+pRL80080,1,1,1,1,1,1,1,1,Putative fructokinase 
+pRL80081,1,1,1,1,1,1,1,1,Putative hydrolase 
+pRL80082,1,1,1,1,1,1,1,1,Putative biotin-binding protein 
+pRL80083,1,1,1,1,1,1,1,1,2-oxoglutarate dehydrogenase E1 component 
+pRL80084,0,0,0,0,0,0,0,0,Putative epimerase/isomerase 
+pRL80085,1,1,1,1,1,1,0,1,Putative substrate-binding component of ABC transporter 
+pRL80086,1,1,1,1,1,1,1,1,Putative ATP-binding component of ABC transporter 
+pRL80087,1,1,1,1,1,1,1,1,Putative permease component of ABC transporter 
+pRL80088,1,1,1,1,1,1,0,0,Putative permease component of ABC transporter 
+phaC,1,1,1,1,1,1,1,1,Poly(3-hydroxyalkanoate) polymerase subunit PhaC 
+phoB,1,1,1,1,1,1,1,1,Phosphate regulon transcriptional regulatory protein PhoB 
+phoU,1,1,1,1,1,1,1,1,Phosphate-specific transport system accessory protein PhoU homolog 
+praR,1,1,1,1,1,1,1,1,Helix-turn-helix domain protein 
+prsD,1,1,1,1,1,1,1,1,Type I secretion system ATP-binding protein PrsD 
+prsE,1,1,1,1,1,1,1,1,Membrane fusion protein (MFP) family protein 
+pssA,1,1,1,1,1,1,1,1,CDP-diacylglycerol--serine O-phosphatidyltransferase 
+pssD,0,1,1,1,0,0,0,1,Glucuronosyltransferase 
+rhaI,0,0,0,0,0,0,0,0,L-rhamnose catabolism isomerase 
+rhaK,1,1,1,1,1,1,0,0,Rhamnose kinase protein 
+rhaM,0,0,0,0,0,0,0,0,L-rhamnose mutarotase 
+rhaP,1,1,1,1,1,1,1,1,RhaP 
+rhaQ,1,1,1,1,1,1,1,1,RhaQ 
+rhaR,1,1,1,1,1,1,1,1,RhaR 
+rhaS,1,1,1,1,1,1,0,1,Autoinducer 2-binding protein LsrB 
+rhaT,1,1,1,1,1,1,1,1,RhaT 
+rhbA,1,1,1,1,1,1,1,1,Diaminobutyrate--2-oxoglutarate aminotransferase 
+rhbB,1,1,1,1,1,1,0,1,"L-2,4-diaminobutyrate decarboxylase "
+rhbC,0,0,0,0,0,0,0,0,Rhizobactin siderophore biosynthesis protein RhbC 
+rhbD,1,1,1,1,1,0,1,1,Rhizobactin siderophore biosynthesis protein RhbD 
+rhbE,0,0,0,0,0,0,1,0,Rhizobactin siderophore biosynthesis protein RhbE 
+rhbF,0,0,0,0,0,0,0,0,Rhizobactin siderophore biosynthesis protein RhbF 
+rhcN,1,1,1,1,1,1,1,1,Type 3 secretion system ATPase 
+rhcQ,0,0,0,0,0,0,1,0,"Type III secretion system translocation protein, RhcQ "
+rhcR,1,1,1,1,1,1,1,1,"Inner membrane protein RhcR, component of type III secretion apparatus (Fragment) "
+rhcS,0,0,0,0,0,0,0,0,"Type III secretion component, RhcS "
+rhcT,1,1,1,1,0,0,1,1,EscT/YscT/HrcT family type III secretion system export apparatus protein (Fragment) 
+rhcU,1,1,1,1,1,1,1,1,"Translocation protein in type III secretion system, RhcU "
+rhcV,1,1,1,1,1,1,1,1,"Type III secretion protein, RhcV family "
+rhrA,0,0,0,0,0,1,0,0,Rhizobactin biosynthesis transcriptional regulator RhrA 
+rhtA,0,0,0,0,0,0,0,0,Rhizobactin receptor 
+rosR,1,1,1,1,1,1,1,1,Transcriptional regulatory protein RosR 
+rspD,1,1,1,1,1,1,1,1,Rhiziobicin secretion protein RspD 
+rzcA,0,0,0,0,0,0,0,0,Rhizobiocin RzcA 
+rzcB,0,0,0,0,0,0,1,1,RzcB 
+teuA,1,1,1,1,1,1,1,1,"Sugar ABC transporter, ATP-binding protein "
+teuC1,1,1,1,1,1,1,1,1,ABC transporter permease 
+teuC2,0,0,0,0,0,1,0,0,Sugar transport system permease homolog 
+tfxA,0,0,0,0,0,0,0,0,Trifolitoxin 
+tfxG,0,0,0,0,0,0,0,0,Trifolitoxin immunity protein 
+trpB,1,1,1,1,1,1,1,1,Tryptophan synthase beta chain 
+trpC,1,1,1,1,1,1,1,1,Indole-3-glycerol phosphate synthase 
+trpE(G),1,1,1,1,1,1,1,1,Anthranilate synthase 
+trpF,1,1,1,1,1,1,1,1,N-(5'-phosphoribosyl)anthranilate isomerase 
+tssB,1,1,1,0,1,1,0,0,Type VI secretion protein 
+tssC,1,1,1,0,1,1,0,0,Putative type VI secretion system protein TssC 
+tssD,0,0,0,0,0,0,0,0,"Type IV secretion system effector Hcp1, TssD "
+tssE,0,0,0,0,1,0,0,0,Type VI secretion system baseplate subunit TssE 
+tssF,1,1,1,0,1,1,0,0,Type VI secretion system baseplate subunit TssF 
+tssG,1,1,1,0,1,1,0,0,Type VI secretion system baseplate subunit TssG 
+tssH,1,1,1,1,1,1,1,1,Type VI secretion system ATPase TssH 
+tssK,1,1,1,0,1,1,0,0,Type VI secretion system baseplate subunit TssK 
+tssL,1,1,1,0,1,1,0,0,Type VI secretion system protein TssL 
+tssM,1,1,1,0,1,1,0,0,Putative type VI secretion protein TssM 
+virB10,0,1,0,1,0,1,0,0,VirB10-like transmembrane secretion protein 
+virB11,1,1,1,1,1,1,1,1,Type IV secretion system protein 
+virB2,0,1,0,1,0,1,0,0,Type IV secretion/conjugal transfer protein 
+virB3,0,1,0,1,0,1,0,0,VirB3 type IV secretion protein 
+virB4,1,1,1,1,1,1,1,1,Type IV secretion system protein virB4 
+virB5,0,1,0,1,0,1,0,0,VirB5 type IV secretion protein 
+virB6,0,0,0,0,0,0,0,0,VirB6 type IV secretion protein 
+virB7,0,1,0,1,0,1,0,0,VirB7-like protein 
+virB8,0,1,1,1,0,1,0,0,Type IV secretion system protein virB8 
+virB9,0,1,1,1,0,1,0,0,VirB9 type IV secretion protein 

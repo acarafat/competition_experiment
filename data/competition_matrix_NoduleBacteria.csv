@@ -1,0 +1,136 @@
+,../nodule_bacteria_specific.131.blast.out,../nodule_bacteria_specific.156.blast.out,../nodule_bacteria_specific.184.blast.out,../nodule_bacteria_specific.186.blast.out,../nodule_bacteria_specific.187.blast.out,../nodule_bacteria_specific.2.blast.out,../nodule_bacteria_specific.4.blast.out,../nodule_bacteria_specific.200.blast.out,geneDesc
+RL0007,0,0,0,0,0,0,0,0,Putative transmembrane FxsA-family protein 
+RL0008,1,1,1,1,1,1,1,1,Tim44 domain-containing protein 
+RL0104,1,1,1,1,1,1,1,1,Putative ribonuclease 
+RL0273,1,1,1,1,1,1,1,1,Putative LysR family transcriptional regulator 
+RL0274,1,1,1,1,1,1,1,1,DUF892 domain-containing protein 
+RL0345,0,0,0,0,0,0,0,0,N-acetyltransferase domain-containing protein 
+RL0392,1,1,1,1,1,1,1,1,Putative hemolysin-like protein 
+RL0929,0,0,0,0,0,0,0,0,Uncharacterized protein 
+RL1013,0,0,0,0,0,0,1,0,17kDa_Anti_2 domain-containing protein 
+RL1166,1,1,1,1,1,1,1,1,Putative ribonuclease-L-PSP family protein 
+RL1167,1,1,1,0,1,1,1,1,Putative TetR family transcriptional regulator 
+RL1522,1,1,1,1,1,0,1,1,Putative transmembrane transporter 
+RL1650,1,1,1,1,1,1,1,1,Putative (DL)-glycerol-3-phosphatase 
+RL1651,1,1,1,1,1,1,1,1,Putative 3-demethylubiquinone-9 3-methyltransferase like protein 
+RL1800,0,0,0,1,0,1,1,0,Putative transmembrane protein 
+RL2084,1,1,1,1,1,1,1,1,Putative acetyltransferase 
+RL2187,0,0,0,0,0,0,0,0,Uncharacterized protein 
+RL2211,1,1,1,1,1,1,1,1,Phasin_2 domain-containing protein 
+RL2324,1,1,1,0,1,0,1,0,Putative ROK family transcriptional regulator 
+RL2368,1,1,1,1,1,1,1,1,Putative GntR family transcriptional regulator 
+RL2435,1,1,1,1,1,1,1,0,Putative efflux protein 
+RL2526,1,1,1,1,1,1,1,1,Putative NAD(P)H nitroreductase 
+RL2553,0,0,0,0,0,0,0,0,BON domain-containing protein 
+RL2554,0,0,0,0,0,0,0,0,Hypothetical exported protein 
+RL2569,0,0,0,0,0,0,0,0,Uncharacterized protein 
+RL2609,0,0,0,0,0,0,0,0,Conserved hypothetical exported protein 
+RL2644,1,0,1,1,1,1,1,1,Uncharacterized protein 
+RL2658,1,1,1,1,1,1,1,1,ABC_trans_aux domain-containing protein 
+RL2659,1,1,1,1,1,1,1,1,Putative solute-binding component of ABC transporter 
+RL2716,1,1,1,1,1,1,1,1,Putative deoR family transcriptional regulator 
+RL2738,1,1,1,1,1,1,1,1,Histidine kinase 
+RL2743,1,1,1,1,1,1,1,1,Putative transcriptional regulator 
+RL2916,0,0,0,0,0,0,0,1,Putative siderophore interacting protein 
+RL3232,0,0,0,0,0,1,1,0,Cupin_2 domain-containing protein 
+RL3236,1,1,1,1,1,1,1,1,Putative transmembrane protein 
+RL3320,1,1,1,1,1,1,1,1,Putative signalling and peptidoglycan binding protein 
+RL3321,0,0,0,0,0,0,0,0,Putative dnaJ-like chaperone 
+RL3353,1,1,1,1,1,1,1,1,Putative ATP-binding component of ABC transporter 
+RL3374A,0,0,0,0,0,0,0,0,Uncharacterized protein 
+RL3430,0,0,1,0,0,0,0,1,Putative ArsR family transcriptional regulator 
+RL3452,1,1,1,1,1,1,1,1,HTH hxlR-type domain-containing protein 
+RL3455,1,1,1,1,1,1,1,1,Putative MarR family transcriptional regulator 
+RL3596,0,0,0,0,0,0,0,0,Uncharacterized protein 
+RL3613,1,1,1,1,1,1,1,1,Putative aldehyde dehydrogenase 
+RL3614,1,0,1,0,0,0,1,0,Uncharacterized protein 
+RL3705,1,1,1,1,1,1,1,1,Putative two-component response regulator transcriptional regulatory protein 
+RL3974,1,1,1,1,1,1,1,1,Putative thioesterase family protein 
+RL4018,1,1,1,1,1,1,1,1,Putative ATP-binding component of ABC transporter 
+RL4336,0,0,0,0,0,0,0,0,Putative acetyltransferase 
+RL4430,1,1,1,1,1,1,1,1,Putative 3-oxoacyl-[acyl-carrier-protein] reductase 
+RL4431,0,0,0,0,0,0,0,0,Conserved hypothetical exported protein 
+RL4490,0,0,1,0,0,0,0,1,Uncharacterized protein 
+RL4491,1,1,1,1,1,1,1,1,EVE domain-containing protein 
+RL4492,0,0,0,0,0,0,0,0,YCII domain-containing protein 
+RL4516,1,1,1,1,1,1,1,1,Putative oxidoreductase 
+RL4517,1,1,1,1,1,1,1,1,Putative LysE family transmembrane efflux family protein 
+RL4535,1,1,1,1,1,1,1,1,Conserved hypothetical exported protein 
+RL4610,0,0,0,0,0,0,0,0,Putative thiamine pyrophosphokinase 
+RL4670,0,0,0,0,0,0,0,0,Uncharacterized protein 
+aat,1,1,1,1,1,1,1,1,Leucyl/phenylalanyl-tRNA--protein transferase 
+accB2,1,1,1,1,1,1,1,1,Biotin carboxyl carrier protein of acetyl-CoA carboxylase 
+accC2,1,1,1,1,1,1,1,1,Putative biotin carboxylase 
+aroA,1,1,1,1,1,1,1,1,3-phosphoshikimate 1-carboxyvinyltransferase 
+clpA,1,1,1,1,1,1,1,1,Putative ATP-dependent Clp protease ATP-binding subunit 
+cspA5,1,1,1,1,1,1,1,1,Putative cold shock protein 
+cysZ,0,0,0,0,0,0,0,0,Putative cysteine biosynthesis protein 
+dgoA,1,1,1,1,1,1,1,1,Putative 2-dehydro-3-deoxy-6-phosphogalactonate aldolase 
+dgoK,1,1,1,1,1,1,1,1,Putative 2-dehydro-3-deoxygalactonokinase 
+dksA,1,1,1,1,1,1,1,1,RNA polymerase-binding transcription factor DksA 
+ecfE,1,1,1,1,1,1,1,1,Zinc metalloprotease 
+fdsB,1,1,1,1,1,1,1,1,Putative NAD-dependent formate dehydrogenase beta subunit 
+fixG1,1,1,1,1,1,1,1,1,Transmembrane nitrogen fixation cation transport protein FixG 
+fliQ,1,1,1,1,1,1,1,1,Flagellar biosynthetic protein FliQ 
+glcB,1,1,1,1,1,1,1,1,Malate synthase G 
+hflK,1,1,1,1,1,1,1,1,Protein HflK 
+hisD2,1,1,1,1,1,1,1,1,Putative histidinol dehydrogenase 
+hupA,1,1,1,1,1,1,1,1,Putative DNA-binding protein HU 
+hutU,1,1,1,1,1,1,1,1,Urocanate hydratase 
+ilvD2,1,1,1,1,1,1,1,1,Putative dihydroxy-acid dehydratase 
+iolR,1,1,1,0,1,1,1,0,Repressor of inositol operon 
+kptA,0,0,0,0,0,0,0,0,Probable RNA 2'-phosphotransferase 
+kup1,1,1,1,1,1,1,1,1,Probable potassium transport system protein kup 1 
+mccc1,1,1,1,1,1,1,1,1,Putative methylcrotonyl-CoA carboxylase alpha chain 
+metG,1,1,1,1,1,1,1,1,Methionine--tRNA ligase 
+nodM,1,1,1,1,1,1,1,1,Glutamine--fructose-6-phosphate aminotransferase [isomerizing] 
+pRL100010,0,0,0,0,0,0,0,0,Uncharacterized protein 
+pRL100062,1,1,1,1,1,1,1,0,Putative ABC transporter permease component 
+pRL100072,1,1,1,1,1,1,1,1,Putative substrate binding periplasmic component of ABC transporter 
+pRL100125,1,1,1,1,1,1,1,1,Putative transposase family protein 
+pRL100126,1,1,1,1,0,1,1,1,Putative transposase-family protein 
+pRL100150,0,0,0,0,0,0,0,0,Uncharacterized protein 
+pRL100168,1,1,1,1,1,1,1,1,Putative transposase 
+pRL100218,0,0,0,0,0,0,0,0,Putative mobilization protein 
+pRL100220,0,0,0,1,0,0,0,0,Uncharacterized protein 
+pRL100221,0,0,0,1,0,0,0,0,Uncharacterized protein 
+pRL100261,1,1,1,1,1,1,1,1,Putative transcriptional regulator 
+pRL100292,1,1,1,1,1,1,1,1,Putative citrate lyase beta chain 
+pRL100293,1,1,1,1,1,1,1,1,Putative MaoC dehydratase family protein 
+pRL110085,1,1,1,1,1,1,1,1,Putative cycloisomerase 
+pRL110176,1,1,1,1,1,1,1,1,Conserved hypothetical exported protein 
+pRL110202,1,1,1,1,1,1,1,0,Uncharacterized protein 
+pRL110283,0,0,0,0,0,0,0,0,Putative DNA-binding protein 
+pRL110509,1,1,1,1,1,1,1,1,Putative oxidoreductase 
+pRL120070,1,1,1,1,1,1,1,1,Putative TetR family transcriptional regulator 
+pRL120071,1,1,1,1,1,1,1,1,Putative substrate-binding component of ABC transporter 
+pRL120198,1,1,1,1,1,1,1,0,Putative L-xylulose kinase 
+pRL120453,1,1,1,0,1,1,1,0,Transcriptional regulatory protein 
+pRL120560,1,1,1,1,1,1,1,1,Putative ATP-binding component of ABC transporter 
+pRL120578,1,1,1,1,1,1,1,1,DUF2147 domain-containing protein 
+pRL120579,0,0,0,0,0,0,1,1,Putative transmembrane protein 
+pRL120614,1,1,1,1,1,1,1,1,Uncharacterized protein 
+pRL120696,1,1,1,1,1,1,1,1,Putative HlyD family secretion protein 
+pRL70050,0,0,0,0,0,0,0,0,Uncharacterized protein 
+pRL70090,0,0,0,0,0,0,0,0,Uncharacterized protein 
+pRL70152,0,1,1,1,1,1,1,1,Putative crown gall-like type IV secretion system protein 
+pRL70170,0,0,0,0,0,0,0,0,Uncharacterized protein 
+pRL70176,0,0,1,1,0,0,0,0,Putative transposase-related protein 
+pRL80081,1,1,1,1,1,1,1,1,Putative hydrolase 
+pRL80126,1,0,0,0,0,0,0,0,Uncharacterized protein 
+pfp,0,0,0,0,0,1,0,0,Pyrophosphate--fructose 6-phosphate 1-phosphotransferase 
+pgk,1,1,1,1,1,1,1,1,Phosphoglycerate kinase 
+ppdK,1,1,1,1,1,1,1,1,"Pyruvate, phosphate dikinase "
+purQ,1,1,1,1,1,1,1,1,Phosphoribosylformylglycinamidine synthase subunit PurQ 
+recN,1,1,1,1,1,1,1,1,DNA repair protein RecN 
+rlpA,1,1,1,1,1,1,1,1,Endolytic peptidoglycan transglycosylase RlpA 
+rnhB,1,1,1,1,1,1,1,1,Ribonuclease HII 
+rnsA,1,1,0,1,0,0,0,1,Putative ribonuclease I 
+rpmE,1,1,1,1,1,1,1,1,50S ribosomal protein L31 
+rpoH,1,1,1,1,1,1,1,1,RNA polymerase sigma factor RpoH 
+ruvC,1,1,1,1,1,1,1,1,Crossover junction endodeoxyribonuclease RuvC 
+secB,1,1,1,1,1,1,1,1,Protein-export protein SecB 
+talB,0,0,0,0,0,0,0,0,Transaldolase 
+tam,1,1,1,1,1,1,1,0,Trans-aconitate 2-methyltransferase 
+traIp7,1,1,1,1,1,1,1,1,Acyl-homoserine-lactone synthase 
+vbsC,0,0,0,0,0,0,0,0,Putative acetylase involved in vicibactin siderophore synthesis 

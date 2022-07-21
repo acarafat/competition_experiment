@@ -1,0 +1,141 @@
+,../rhizosphere_progressive.131.blast.out,../rhizosphere_progressive.156.blast.out,../rhizosphere_progressive.184.blast.out,../rhizosphere_progressive.186.blast.out,../rhizosphere_progressive.187.blast.out,../rhizosphere_progressive.2.blast.out,../rhizosphere_progressive.4.blast.out,../rhizosphere_progressive.200.blast.out,geneDesc
+RL0002,1,1,1,1,1,1,1,1,7-methyl-GTP pyrophosphatase 
+RL0019,1,1,1,1,1,1,1,1,DUF45 domain-containing protein 
+RL0026,1,1,1,1,1,1,1,1,DNA helicase 
+RL0027,1,1,1,1,1,1,1,1,PDDEXK_1 domain-containing protein 
+RL0028,1,1,1,1,1,1,1,1,Putative nucleotidyltransferase protein 
+RL0034,1,1,1,1,1,1,1,1,Putative PTS phosphocarrier protein HPr 
+RL0052,0,0,0,0,0,0,0,0,Uncharacterized protein 
+RL0139,1,1,1,1,1,1,1,1,Prephenate dehydratase 
+RL0327,1,1,1,1,1,1,1,1,Putative glutathione S-transferase 
+RL0431,0,0,0,0,0,0,0,0,Putative plasmid stability protein 
+RL0588,0,0,0,0,0,0,0,0,Putative peptidoglycan binding protein 
+RL0811,1,1,1,1,1,1,1,1,Putative beta-glycosyltransferase 
+RL0811A,1,1,1,1,1,1,1,0,Putative glycosyltransferase 
+RL0813,1,1,1,1,1,1,1,1,"Putative udp-glucose-4-epimerase (Putative dtdp-glucose 4,6-dehydratase) "
+RL0816,1,0,1,1,1,1,1,1,Uncharacterized protein 
+RL0821,1,0,1,0,1,1,1,0,Uncharacterized protein 
+RL0855,1,1,1,1,1,1,1,1,Glutamate--cysteine ligase 
+RL0885,1,1,1,1,1,1,1,1,Putative hydrolase 
+RL0920,1,1,1,1,1,1,1,1,Iron-sulfur cluster carrier protein 
+RL0959,1,1,1,1,1,1,1,1,Putative FAD binding oxidoreductase 
+RL1003,0,0,0,0,0,0,0,0,Putative transmembrane component of ABC transporter 
+RL1004,1,1,1,1,1,1,1,1,Putative ATP-binding component of ABC transporter 
+RL1105,1,1,1,0,1,1,1,1,Putative transcriptional regulator 
+RL1382,0,0,0,0,0,1,1,1,Histidine kinase 
+RL1523,1,1,1,1,1,1,1,1,Uncharacterized protein 
+RL1524,1,1,1,1,1,1,1,1,Uncharacterized protein 
+RL1525,1,1,1,1,1,1,1,1,Putative aminomethyltransferase 
+RL1532,1,1,1,1,1,1,1,1,CDP-diacylglycerol--serine O-phosphatidyltransferase 
+RL1589,1,1,1,1,1,1,1,1,Putative ropB outer membrane protein 
+RL1597,0,0,0,0,0,1,0,1,Putative transmembrane protein 
+RL1945,1,1,1,1,1,1,1,1,Vitamin B12-dependent ribonucleotide reductase 
+RL1946,0,0,0,0,0,0,0,0,Uncharacterized protein 
+RL2052,0,0,0,0,0,0,0,0,Putative peptidase 
+RL3206,0,0,0,0,0,0,0,1,Putative TetR family transcriptional regulator 
+RL3454,1,1,1,1,1,1,1,1,Putative two-component response regulator transcriptional regulatory protein 
+RL3500,1,1,1,1,1,1,1,1,DUF58 domain-containing protein 
+RL3501,1,1,1,1,1,1,1,1,Putative transmembrane protein 
+RL3507,1,1,1,1,1,1,1,1,Putative phosphoesterase 
+RL3674,1,1,1,1,1,1,1,1,Mannose-1-phosphate guanylyltransferase 
+RL3988,0,1,0,0,0,0,0,1,PINc domain-containing protein 
+RL4066,0,0,0,0,0,0,0,0,Uncharacterized protein 
+RL4131,1,1,1,1,1,1,1,1,Putative TPR repeat family protein 
+RL4291,1,1,1,1,1,1,1,1,Methyltransf_11 domain-containing protein 
+RL4399,0,0,0,0,0,0,0,0,Uncharacterized protein 
+RL4400,1,1,1,1,1,1,1,1,Putative transmembrane component of ABC transporter 
+RL4401,1,1,1,1,1,1,1,1,Putative ATP-binding component of ABC transporter 
+RL4402,1,1,1,1,1,1,1,1,Conserved hypothetical exported protein 
+RL4440,1,1,1,1,1,1,1,1,Uncharacterized protein 
+RL4544,1,1,1,1,1,1,1,1,Putative methylase 
+RL4559,1,1,1,1,1,1,1,1,Putative two-component response regulator transcriptional regulatory protein 
+RL4691,1,1,1,1,1,1,1,1,Putative peptidase 
+RL4716,1,1,1,1,1,1,1,1,Conserved hypothetical exported protein 
+RL4731,1,1,1,1,1,1,1,1,Pyridoxal phosphate homeostasis protein 
+ahcY,1,1,1,1,1,1,1,1,Adenosylhomocysteinase 
+argJ,1,1,1,1,1,1,1,1,Arginine biosynthesis bifunctional protein ArgJ 
+aroA,1,1,1,1,1,1,1,1,3-phosphoshikimate 1-carboxyvinyltransferase 
+aroE,1,1,1,1,1,1,1,1,Shikimate dehydrogenase (NADP(+)) 
+bacA,1,1,1,1,1,1,1,1,Putative transmembrane transporter required for bacteroid development 
+bioY,1,1,1,1,1,1,1,0,Biotin transporter 
+cbbT,1,1,1,1,1,1,1,1,Transketolase 
+ccdA,1,1,1,1,1,1,1,1,Putative cytochrome c-type biogenesis protein 
+ccmA,1,1,1,1,1,1,1,1,Cytochrome c biogenesis ATP-binding export protein CcmA 
+ccsA,1,1,1,1,1,1,1,1,Citrate synthase 
+cobF,1,1,1,1,1,1,1,1,Precorrin-6A synthase [deacetylating] 
+cobO,1,1,1,1,1,1,1,1,Corrinoid adenosyltransferase 
+cobS,1,1,1,1,1,1,1,1,Putative aerobic cobaltochelatase 
+cobT,1,1,1,1,1,1,1,1,Putative aerobic cobaltochelatase 
+ctaC,1,1,1,1,1,1,1,1,Cytochrome c oxidase subunit 2 
+ctaD,1,1,1,1,1,1,1,1,Cytochrome c oxidase subunit 1 
+ctpA,1,1,1,1,1,1,1,1,Putative carboxy-terminal processing protease 
+dapB,1,1,1,1,1,1,1,1,4-hydroxy-tetrahydrodipicolinate reductase 
+deaD,1,1,1,1,1,1,1,1,Putative cold-shock DeaD-box protein A (ATP-dependent RNA helicase) 
+dus,1,1,1,1,1,1,1,1,tRNA-dihydrouridine synthase 
+edd,1,1,1,1,1,1,1,1,Phosphogluconate dehydratase 
+eno,1,1,1,1,1,1,1,1,Enolase 
+fbpB,0,0,0,0,0,1,0,1,Putative iron(III)-transport system permease protein 
+feuQ,1,1,1,1,1,1,1,1,Histidine kinase 
+fixN2,1,1,1,1,1,1,1,1,Cytochrome-c oxidase 
+fmt,1,1,1,1,1,1,1,1,Methionyl-tRNA formyltransferase 
+ftsE,1,1,1,1,1,1,1,1,Cell division ATP-binding protein FtsE 
+ftsX,1,1,1,1,1,1,1,1,Putative cell division protein homolog 
+glnG,1,1,1,1,1,1,1,1,DNA-binding transcriptional regulator NtrC 
+glyA,1,1,1,1,1,1,1,1,Serine hydroxymethyltransferase 
+gmd,1,1,1,1,1,1,1,1,"GDP-mannose 4,6-dehydratase "
+gor,1,1,1,1,1,1,1,1,Glutathione reductase 
+gpmA,1,1,1,1,1,1,1,1,"2,3-bisphosphoglycerate-dependent phosphoglycerate mutase "
+greA,1,1,1,1,1,1,1,1,Transcription elongation factor GreA 
+gshB,1,1,1,1,1,1,1,1,Glutathione synthetase 
+hisC,1,1,1,1,1,1,1,1,Histidinol-phosphate aminotransferase 
+ilvC,1,1,1,1,1,1,1,1,Ketol-acid reductoisomerase (NADP(+)) 
+ilvD,1,1,1,1,1,1,1,1,Dihydroxy-acid dehydratase 
+ilvI,1,1,1,1,1,1,1,1,Acetolactate synthase 
+lepA,1,1,1,1,1,1,1,1,Elongation factor 4 
+leuA,1,1,1,1,1,1,1,1,2-isopropylmalate synthase 
+leuB,1,1,1,1,1,1,1,1,3-isopropylmalate dehydrogenase 
+leuS2,1,1,1,1,1,1,1,1,Leucine--tRNA ligase 2 
+lpcC,1,1,1,1,1,1,1,1,Lipopolysaccharide core biosynthesis protein 
+lpsD,0,0,0,0,0,0,0,0,Putative O-antigen ligase 
+metAA,1,1,1,1,1,1,1,0,Homoserine O-acetyltransferase 
+metZ,1,1,1,1,1,1,1,1,O-succinylhomoserine sulfhydrylase 
+ntrB,1,1,1,1,1,1,1,1,Histidine kinase 
+pRL100386,0,0,0,0,0,0,0,0,VWFA domain-containing protein 
+pRL110389,0,0,0,0,0,0,0,0,Putative exopolysaccharide production protein 
+pRL120618,1,1,1,1,1,1,1,1,Putative LacI family transcriptional regulator 
+pRL70053,0,0,0,0,0,0,0,0,Putative transmembrane protein 
+pepA,0,1,1,1,1,1,1,1,Probable cytosol aminopeptidase 
+petA,1,1,1,1,1,1,1,1,Ubiquinol-cytochrome c reductase iron-sulfur subunit 
+ppiD,1,1,1,1,1,1,1,1,Parvulin-like PPIase 
+ppx,0,1,1,1,1,1,1,1,Exopolyphosphatase 
+pssG,1,1,1,0,1,1,1,1,Putative glycosyl transferase 
+pssN,1,1,1,1,1,1,1,1,Putative capsule polysaccharide export protein 
+ptsP,1,1,1,1,1,1,1,1,Phosphoenolpyruvate--protein phosphotransferase 
+purA,1,1,1,1,1,1,1,1,Adenylosuccinate synthetase 
+purB,1,1,1,1,1,1,1,1,Adenylosuccinate lyase 
+pyrB,1,1,1,1,1,1,1,1,Aspartate carbamoyltransferase 
+pyrC2,1,1,1,1,1,1,1,1,Putative dihydroorotase 
+relA,1,1,1,1,1,1,1,1,(p)ppGpp synthase 
+ribC,1,1,1,1,1,1,1,1,Putative riboflavin synthase 
+ribG,1,1,1,1,1,1,1,1,Riboflavin biosynthesis protein RibD 
+rkpK,1,1,1,1,1,1,1,1,UDP-glucose 6-dehydrogenase 
+rluC,1,1,1,1,1,1,1,1,Pseudouridine synthase 
+rluD,1,1,1,1,1,1,1,1,Pseudouridine synthase 
+rnhA,1,1,1,1,1,1,1,1,Ribonuclease H 
+ropA1,0,0,0,0,0,0,0,0,Porin 
+rosR,1,1,1,1,1,1,1,1,Putative nodulation competitiveness transcriptional regulator 
+rpe,1,1,1,1,1,1,1,1,Ribulose-phosphate 3-epimerase 
+rpoN,1,1,1,1,1,1,1,1,RNA polymerase sigma-54 factor 
+ruvA,1,1,1,1,1,1,1,1,Holliday junction ATP-dependent DNA helicase RuvA 
+ruvB,1,1,1,1,1,1,1,1,Holliday junction ATP-dependent DNA helicase RuvB 
+smpB,1,1,1,1,1,1,1,1,SsrA-binding protein 
+tadA,1,1,1,1,1,1,1,1,tRNA-specific adenosine deaminase 
+trpA,1,1,1,1,1,1,1,1,Tryptophan synthase alpha chain 
+trpB,1,1,1,1,1,1,1,1,Tryptophan synthase beta chain 
+trpC,1,1,1,1,1,1,1,1,Indole-3-glycerol phosphate synthase 
+trpD,1,1,1,1,1,1,1,1,Anthranilate phosphoribosyltransferase 
+trpE,1,1,1,1,1,1,1,1,Anthranilate synthase 
+trpF,1,1,1,1,1,1,1,1,N-(5'-phosphoribosyl)anthranilate isomerase 
+typA,1,1,1,1,1,1,1,1,50S ribosomal subunit assembly factor BipA 
+tyrC,1,1,1,1,1,1,1,1,Putative prephenate dehydrogenase 
+vapC,1,1,1,1,1,1,1,1,Ribonuclease VapC 

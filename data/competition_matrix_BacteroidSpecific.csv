@@ -1,0 +1,25 @@
+,../bacteroid_specific.131.blast.out,../bacteroid_specific.156.blast.out,../bacteroid_specific.184.blast.out,../bacteroid_specific.186.blast.out,../bacteroid_specific.187.blast.out,../bacteroid_specific.2.blast.out,../bacteroid_specific.4.blast.out,../bacteroid_specific.200.blast.out,geneDesc
+RL0119,0,0,0,0,0,0,0,0,Putative ribosomal RNA small subunit methyltransferase 
+RL0401,1,1,1,1,1,1,1,1,Putative universal stress protein 
+RL0901,0,0,0,0,0,0,0,0,Uncharacterized protein 
+RL1217,1,1,1,1,1,1,1,1,Putative TetR family transcriptional regulator 
+RL1717,1,1,1,1,1,1,1,1,Putative lactoylglutathione lyase 
+RL1718,1,1,1,0,1,1,1,1,Putative transmembrane protein 
+RL3462,0,0,0,0,0,0,0,0,Uncharacterized protein 
+RL3666,0,0,0,0,0,0,0,0,Uncharacterized protein 
+dctB,0,0,0,0,0,0,0,0,C4-dicarboxylate transport sensor protein 
+dctD,1,1,1,1,1,1,1,1,Putative C4-dicarboxylate transport two-component response regulator sigma 54 transcriptional regulatory protein 
+fixC,1,1,1,1,1,1,1,1,Protein FixC 
+fixX,1,1,1,1,1,1,1,1,Ferredoxin-like protein 
+guaD,1,1,1,1,1,1,1,1,Guanine deaminase 
+nifA,1,1,1,1,1,1,1,1,Nif-specific regulatory protein 
+nifB,1,1,1,1,1,1,1,1,FeMo cofactor biosynthesis protein NifB 
+nifE,1,1,1,1,1,1,1,1,Nitrogenase iron-molybdenum cofactor biosynthesis protein NifE 
+nifH,1,1,1,1,1,1,1,1,Nitrogenase iron protein 
+pckA,1,1,1,1,1,1,1,1,Phosphoenolpyruvate carboxykinase (ATP) 
+petC,1,1,1,1,1,1,1,1,Putative cytochrome c1 
+pxpA,1,1,1,1,1,1,1,1,5-oxoprolinase subunit A 
+pyrE,0,0,0,1,0,1,0,0,Orotate phosphoribosyltransferase 
+smf,1,1,1,1,1,1,1,1,Putative smf protein 
+yacG,1,1,1,1,1,1,1,1,DNA gyrase inhibitor YacG 
+ychF,1,1,1,1,1,1,1,1,Ribosome-binding ATPase YchF 
