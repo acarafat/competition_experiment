@@ -76,7 +76,7 @@ get_legend<-function(myggplot){
 }
 
 # read sampling harvest csv
-data <- read.csv('~/GDrive/Sachs/Chapter1_Competition/Competition_study/GH14_19S/Sampling_harvest_v0.8.csv', header = TRUE)
+data <- read.csv('../data/Sampling_harvest_v0.8.csv', header = TRUE)
 
 # Subset only harvest relevant variables
 harvest <- data[, c('plant_pos', 'plant_id', 'root_mass', 'shoot_mass', 'date', 'total_nodules', 'mean_weight')]
@@ -132,9 +132,9 @@ harvest <- harvest[ which(numbers_only(harvest$plant_pos) == TRUE), ]
 ##################################################
 
 # Loading trait file
-traits.single <- as.data.frame(read.csv('~/GDrive/Sachs/Chapter1_Competition/Competition_study/GH14_19S/treatment_traits_single.csv', header=T))
-traits.coinoc <- as.data.frame(read.csv('~/GDrive/Sachs/Chapter1_Competition/Competition_study/GH14_19S/treatment_traits_coinoculation.csv', header=T))
-traits.all <- as.data.frame(read.csv('~/GDrive/Sachs/Chapter1_Competition/Competition_study/GH14_19S/treatment_traits_all.csv', header=T))
+traits.single <- as.data.frame(read.csv('../data/treatment_traits_single.csv', header=T))
+traits.coinoc <- as.data.frame(read.csv('../data/treatment_traits_coinoculation.csv', header=T))
+traits.all <- as.data.frame(read.csv('../data/treatment_traits_all.csv', header=T))
 
 # merge harvest data and trait
 harvest.single <- merge(harvest, traits.single, by.x='treatment', by.y='Treatment')
@@ -160,7 +160,7 @@ ggarrange(psingle, pcoinoc)
 ############################
 # Working with nodule area #
 ############################
-nod <- read.csv('~/GDrive/Sachs/Chapter1_Competition/Competition_study/GH14_19S/Nodule_area_data/area_est_vc.tsv', header = TRUE, sep='\t')
+nod <- read.csv('../data/area_est_vc.tsv', header = TRUE, sep='\t')
 
 nod$id <- as.character(gsub(".xls:*.\\d", '', nod$Nodules))
 nod$number <- as.integer(gsub(".*xls:", '', nod$Nodules))
@@ -904,7 +904,7 @@ single.response <- response.plot(single.nod, 'ShootRG', 'treatment', 'ShootRG', 
 single.response <- single.response$data
 
 #factor in abundance
-abundance = read.csv( '/Users/arafat/GDrive/Sachs/Chapter1_Competition/Competition Experiment/AmpliconSeq/Amplicon_Fragments/competition_abundanc.csv', header=T)
+abundance = read.csv( '../data/competition_abundance.csv', header=T)
 abundance[is.na(abundance)] <- 0
 abundance$sum <- rowSums(abundance[, c('A', 'A.B', 'B')])
 head(abundance)
@@ -2433,7 +2433,7 @@ plot(tuk.coinc.cld)
 ################
 # Innoculation #
 ################
-innoc.count <- read.csv('~/Sachs/Competition_study/GH14_19S/inoculation_count.csv', header = TRUE)
+innoc.count <- read.csv('../data/inoculation_count.csv', header = TRUE)
 
 
 #########################
