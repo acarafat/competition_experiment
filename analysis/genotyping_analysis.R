@@ -288,14 +288,18 @@ RO$nodule.value <- nodule.value
 RO$nodule.se <- nodule.se
 RO$dominance <- c(6, 6, 5, 4,  3, 2, 1, 0)
 
+RO[which(RO$fix == '+'),]$fix <- "Fix+"
+RO[which(RO$fix == '-'),]$fix <- "Fix-"
+RO$fix <- factor(RO$fix, levels = c('Fix+', 'Fix-'))
+
 
 Anova(lm(RO.value~fix, data=RO), type='II')
 compare_means(RO.value~fix, data=RO)
 
 # Main result figure
 b = ggplot(RO, aes(x=RO.names, y=dominance, fill=fix)) + geom_bar(stat='identity') +
-  xlab('Strain') + ylab('') + ggtitle('b. Dominant in #Treatments') + theme(legend.position='none') +
-  theme_bw() +
+  xlab('Strain') + ylab('#Times dominant in coinoculation') + ggtitle('b. Dominant in #Treatments') + theme(legend.position='none') +
+  theme_bw() + scale_fill_manual(values=c('#2E8B57', '#F8766D')) +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
@@ -303,25 +307,25 @@ b = ggplot(RO, aes(x=RO.names, y=dominance, fill=fix)) + geom_bar(stat='identity
 
 c = ggplot(RO, aes(x=RO.names, y=RO.value, fill=fix)) + geom_bar(stat='identity') +
   geom_errorbar(aes(ymin=RO.value - RO.se, ymax=RO.value + RO.se), width=0.2) +
-  xlab('Strain') + ylab('') + ggtitle('c. Mean Nodule Occupancy') + theme(legend.position='none') +
+  xlab('Strain') + ylab('Mean Count Value') + ggtitle('c. Mean Nodule Occupancy') + theme(legend.position='none') +
   #annotate('text', x='186', y=1, label='Wilcoxon p-value: 0.0286', col='blue') +
-  theme_bw() +
+  theme_bw() + scale_fill_manual(values=c('#2E8B57', '#F8766D')) +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 d = ggplot(RO, aes(x=RO.names, y=nodule.value, fill=fix)) + geom_bar(stat='identity') +
   geom_errorbar(aes(ymin=nodule.value - nodule.se, ymax=nodule.value + nodule.se), width=0.2) +
-  xlab('Strain') + ylab('') + ggtitle('d. Mean #Nodules') + theme(legend.position='none') +
-  theme_bw() +
+  xlab('Strain') + ylab('Mean Count Value') + ggtitle('d. Mean #Nodules') + theme(legend.position='none') +
+  theme_bw() + scale_fill_manual(values=c('#2E8B57', '#F8766D')) +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), 
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 e = ggplot(RO, aes(x=RO.names, y=RG.value, fill=fix)) + geom_bar(stat='identity') +
   geom_errorbar(aes(ymin=RG.value - RG.se, ymax=RG.value + RG.se), width=0.2) +
-  xlab('Strain') + ylab('') + ggtitle('E. Mean Shoot RG') + theme(legend.position='none') +
-  theme_bw() +
+  xlab('Strain') + ylab('Mean Count Value') + ggtitle('E. Mean Shoot RG') + theme(legend.position='none') +
+  theme_bw() + scale_fill_manual(values=c('#2E8B57', '#F8766D')) +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
