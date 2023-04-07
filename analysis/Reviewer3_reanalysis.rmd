@@ -1,0 +1,410 @@
+---
+title: "reanalysis"
+author: "reviewer"
+date: "2023-01-31"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+## summary
+
+335 plants: 28 coinoculation treatments, 8 single inoculation treatments, uninoculated controls (10 reps of each)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+## load packages
+library(tidyverse)
+library(car)
+
+## load data
+raw_data <- read_csv("../data/raw_data.csv")
+master <- read_csv("../data/master.csv")
+harvest <- read_csv("../data/harvest.csv")
+
+## add other metrics
+
+### get total plant biomass first
+master$total_biomass <- master$shoot_mass + master$root_mass
+
+### total nod biomass
+master$total_nodmass <- master$mean_weight*master$total_nodules
+
+### mean weight?
+master$mean_weight2 <- master$dryMass/master$total_nodules
+
+### try to calculate investment
+master$investment2 <- master$total_nodmass / master$total_biomass
+(check_match <- ifelse(round(master$investment, 3) == 
+                         round(master$investment2, 3), TRUE, FALSE)) ## matched
+
+### create benefit per nodule
+master$per_nod_benefit <- master$ShootRG/master$total_nodules
+
+## filter uninoculated controls
+treated <- master %>%
+  filter(treatment != "H2O") %>%
+  droplevels(.)
+
+## rename Fix treatment
+treated$type <- ifelse(treated$Fix == "+", "Single_Effective", 
+                       ifelse(treated$Fix == "-", "Single_Ineffective",
+                              ifelse(treated$Fix == "+/+", "Co_Effective",
+                                     ifelse(treated$Fix == "+/-", "Co_Mixed",
+                                            "Co_Ineffective"))))
+
+treated$type <- factor(treated$type, levels = c("Single_Effective", "Co_Effective",
+                                                "Co_Mixed", "Single_Ineffective", "Co_Ineffective"))
+
+save(treated, file = "./treated.Rdata")
+```
+
+## examine trait correlations
+
+```{r trait_corrs}
+load(file = "./treated.Rdata") ## loads treated
+
+### correlation between shoot_mass and total nodule weight
+ggplot(treated, aes(x=total_nodules, y = ShootRG)) +
+  geom_point(aes(color = type)) +
+  geom_smooth(method="lm", formula = "y~x")
+
+### get residuals
+lm <- lm(log(ShootRG) ~ total_nodules*type, data = treated)
+summary(lm) ## sig
+aov <- aov(lm)
+summary(aov)
+
+res_investment <- as.data.frame(lm$residuals)
+res_investment$ID <- row.names(res_investment)
+colnames(res_investment) <- c("res","ID")
+
+### add residuals to master
+treated$ID <- row.names(treated)
+treated <- left_join(treated, res_investment, by = "ID")
+
+## correlations between shoot_mass and all other traits
+traits <- c("root_mass","shoot_mass", "total_nodules", "mean_weight",
+            "RG","ShootRG","investment","AreaMM","dryMass","total_biomass",
+            "total_nodmass","res","per_nod_benefit")
+
+## gather traits to be correlated
+corrs <- treated %>%
+  select(treatment, plant_id, all_of(traits)) %>%
+  gather(., "trait", "value", -treatment, -ShootRG, -plant_id)
+
+ggplot(corrs, aes(x=value, y = ShootRG)) +
+  geom_point() +
+  geom_smooth(method = "loess", formula = "y~x") +
+  facet_wrap(~trait, scales = "free_x") +
+  theme_bw()
+```
+
+## summarize single-inoculation data
+
+```{r single}
+load(file = "./treated.Rdata") ## loads treated
+
+## filter to just single inoculation treatments
+single <- treated %>%
+  filter(treatment %in% c("131", "156", "4", "184", 
+                          "186", "187", "2", "200")) %>%
+  droplevels(.)
+
+### reorder treatments
+single$treatment <- factor(single$treatment, 
+                                  levels = c("131", "156", "4", "184", 
+                                             "186", "187", "2", "200")
+                                  )
+
+### corrplot between relative shoot growth and total nodule mass
+ggplot(single, aes(x=total_nodules, y = log(ShootRG), color = treatment)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = "y~x", size = 2) +
+  theme_bw()
+
+### corrplot between relative shoot growth and total nodule mass
+ggplot(single, aes(x=total_nodmass, y = log(ShootRG), color = treatment)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = "y~x", size = 2) +
+  theme_bw()
+
+### ANCOVA
+lm <- lm(log(ShootRG) ~ total_nodules*treatment, data = single)
+lm_sum <- summary(lm)
+(aov <- Anova(lm, type = 3)) ## sig
+
+## specify traits
+traits <- c("root_mass","shoot_mass", "total_nodules", "mean_weight",
+            "RG","ShootRG","investment","AreaMM","dryMass","total_biomass",
+            "total_nodmass")
+
+### get means
+single_sum <- single %>%
+  group_by(treatment) %>%
+  summarize_at(traits, mean, na.rm = TRUE)
+
+## calculate benefit per nod
+single_sum$per_nod_benefit <- single_sum$ShootRG/single_sum$total_nodules
+
+## quick graph
+ggplot(single_sum, aes(x=reorder(treatment, per_nod_benefit, median),
+                       y = per_nod_benefit)) +
+  geom_bar(stat = "identity")
+
+## add in slopes
+all_coef <- as.data.frame(lm_sum$coefficients)
+treatment <- single_sum$treatment
+###
+treat131 <- all_coef["total_nodules","Estimate"]
+treat156 <- all_coef["total_nodules","Estimate"] + 
+  all_coef["total_nodules:treatment156","Estimate"]
+treat4 <- all_coef["total_nodules","Estimate"] + 
+  all_coef["total_nodules:treatment4","Estimate"]
+treat184 <- all_coef["total_nodules","Estimate"] + 
+  all_coef["total_nodules:treatment184","Estimate"]
+treat186 <- all_coef["total_nodules","Estimate"] + 
+  all_coef["total_nodules:treatment186","Estimate"]
+treat187 <- all_coef["total_nodules","Estimate"] + 
+  all_coef["total_nodules:treatment187","Estimate"]
+treat2 <- all_coef["total_nodules","Estimate"] + 
+  all_coef["total_nodules:treatment2","Estimate"]
+treat200 <- all_coef["total_nodules","Estimate"] + 
+  all_coef["total_nodules:treatment200","Estimate"]
+slopes <- c(treat131, treat156, treat4, treat184,
+            treat186, treat187, treat2, treat200)
+
+single_sum$slopes <- slopes
+
+save(single_sum, file = "./single_sum.Rdata")
+
+### corrplot between relative shoot growth and total nodule mass
+ggplot(single_sum, aes(x=total_nodmass, y = log(ShootRG))) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = "y~x", size = 2) +
+  theme_bw()
+```
+
+## compare performance in single vs co
+
+```{r comp}
+load(file = "./treated.Rdata") ## loads treated
+
+## specify
+traits <- c("root_mass","shoot_mass", "total_nodules", "mean_weight",
+            "RG","ShootRG","investment","AreaMM","dryMass","total_biomass",
+            "total_nodmass")
+
+## gather traits
+treated.l <- treated %>%
+  select(type, plant_id, treatment, all_of(traits)) %>%
+  gather(., "trait", "value", -type, -plant_id, -treatment)
+
+## plot of all traits
+ggplot(treated.l, aes(x=type, y = value)) +
+  geom_boxplot() +
+  geom_jitter(aes(color = treatment)) +
+  facet_wrap(~trait, scales = "free_y") +
+  theme_bw() +
+  guides(color = "none") +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)
+  )
+
+## test whether shootRG is highest in + vs +/-
+lm <- lm(log(ShootRG) ~ type, data = treated)
+aov <- aov(lm)
+summary(aov)
+TukeyHSD(aov)
+
+## test whether total_nodules is highest in + vs +/-
+lm <- lm(sqrt(total_nodules) ~ type, data = treated)
+aov <- aov(lm)
+summary(aov)
+TukeyHSD(aov)
+
+## plot of shootRG and total_nodles
+p <- ggplot(treated.l %>% filter(trait %in% c("ShootRG","total_nodules")), 
+       aes(x=type, y = value)) +
+  geom_boxplot() +
+  geom_jitter(aes(color = treatment)) +
+  facet_wrap(~trait, scales = "free_y") +
+  theme_bw() +
+  guides(color = "none") +
+  theme(
+    axis.text.x = element_text(angle = 25, hjust = 0.5, vjust = 0.5)
+  )
+
+ggsave(p, file = "./compare_treats.png")
+```
+
+## get nodule occupancy data
+
+```{r nod_occ}
+## read in data
+nod_occ <- read_csv("nod_occ.csv")
+
+## total nodules
+nod_occ$total_nods <- rowSums(nod_occ[,c("A","B","A_B")], na.rm = TRUE)
+
+## make dup treatment
+nod_occ$treatment2 <- nod_occ$treatment
+
+## split strains
+nod_occ <- nod_occ %>%
+  separate(treatment2, c("strain_A", "strain_B"))
+
+## replaces NAs with zeros
+nod_occ <- replace(nod_occ, is.na(nod_occ), 0)
+
+## frequency
+nod_occ <- nod_occ %>%
+  rowwise() %>%
+  mutate(prop_A_single = (A/total_nods),
+         prop_A_mixed = A_B/(2*total_nods),
+         fA = prop_A_single + prop_A_mixed,
+         fB = 1 - fA)
+
+save(nod_occ, file = "./nodule_occupancy.Rdata")
+```
+
+## compare expected to observed values
+
+expected value in co-inoculation: 
+  - value in single inoculation with strain A multiplied by fA
+  - Plus, value in single inoculation with strain B multiplied by fB
+  
+need to get values in single inoculation
+
+```{r comp_raw}
+## observed data
+load(file = "./treated.Rdata") ## loads treated
+
+## filter to co-inoculation treatments
+mixed <- treated %>%
+  filter(!treatment %in% c("131", "156", "4", "184", 
+                          "186", "187", "2", "200")) %>%
+  droplevels(.)
+
+## load nodule occupancy data
+load(file = "./nodule_occupancy.Rdata") ## loads nod_occ
+
+### add in fA and fB given treatments
+mixed <- left_join(mixed, nod_occ[,c("strain_A", "strain_B", "fA","fB","treatment")], 
+                   by = "treatment")
+
+#save(mixed, file = "./mixed.Rdata")
+
+### add in values for each strain individually - ShootRG
+load(file = "./single_sum.Rdata") ## loads single sum
+
+### expect values from single inoculation
+mixed$exp_strain_A <- single_sum$ShootRG[match(mixed$strain_A, 
+                                             single_sum$treatment)]
+mixed$exp_strain_B <- single_sum$ShootRG[match(mixed$strain_B, 
+                                             single_sum$treatment)]
+
+### calculate according to their paper
+mixed$exp <- ((mixed$exp_strain_A)*(mixed$fA)) + ((mixed$exp_strain_B)*(mixed$fB))
+
+### t.test for each treatment separately
+treat.list <- unique(mixed$treatment)
+
+t.test_fun <- function(treat, df){
+  
+  ## filter for each treatment
+  mixed_treat <- df %>%
+  filter(treatment %in% treat) %>%
+  droplevels(.)
+  
+predicted <- mean(mixed_treat$exp, na.rm = TRUE)
+
+ttest <- t.test(mixed_treat$ShootRG, mu = predicted)
+
+return(ttest)
+}
+
+out <- sapply(treat.list, FUN = t.test_fun, df = mixed,
+              simplify = FALSE, USE.NAMES = TRUE)
+
+## alternative (benefit per nod)
+
+### expect values from single inoculation
+mixed$exp2_strain_A <- single_sum$per_nod_benefit[match(mixed$strain_A, 
+                                             single_sum$treatment)]
+mixed$exp2_strain_B <- single_sum$per_nod_benefit[match(mixed$strain_B, 
+                                             single_sum$treatment)]
+
+### total nodules of each strain
+mixed$total_nods_A <- mixed$fA * mixed$total_nodules
+mixed$total_nods_B <- mixed$fB * mixed$total_nodules
+
+### calculate according to per benefit
+mixed$exp2 <- ((mixed$exp2_strain_A)*(mixed$total_nods_A)) + ((mixed$exp2_strain_B)*(mixed$total_nods_B))
+
+## compare graphically
+mixed.l <- mixed %>%
+  select(ShootRG, exp, exp2, treatment) %>%
+  gather(., method, value, -treatment, -ShootRG)
+
+p <- ggplot(mixed.l, aes(x=value, y = ShootRG, color = method)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = "y~x") +
+  geom_abline(slope = 1, intercept = 0, linetype = 2) +
+  scale_color_discrete(breaks = c("exp","exp2"),
+    labels = c("Current expected values",
+               "Alternative expected values")) +
+  ylab("Observed relative shoot growth") +
+  xlab("Expected relative shoot growth") +
+  theme_bw()
+
+ggsave(p, file = "./corr_methods.png")
+
+## compare fit
+lm <- lm(ShootRG ~ value*method, data = mixed.l)
+summary(lm)
+
+lma <- lm(ShootRG ~ exp, data = mixed)
+summary(lma) ## Adjusted R-squared:  0.06295 
+
+lmb <- lm(ShootRG ~ exp2, data = mixed)
+summary(lmb) ## Adjusted R-squared:  0.6824 
+
+## compare among coinoculation treatments
+ggplot(mixed, aes(x=exp2, y = ShootRG, color = type)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = "y~x") +
+  geom_abline(slope = 1, intercept = 0, linetype = 2) +
+  ylab("Predicted relative shoot growth") +
+  xlab("Observed relative shoot growth")
+
+
+lmc <- lm(ShootRG ~ exp2*type, data = mixed)
+summary(lmc) ## sig less than 1, but treatments are not sig different
+
+## compare among approaches
+
+## compare graphically
+mixed.l <- mixed %>%
+  select(ShootRG, exp, exp2, treatment) %>%
+  gather(., method, value, -treatment)
+
+p <- ggplot(mixed.l, aes(x=method, y = value)) +
+  geom_boxplot() +
+  geom_jitter() +
+  scale_x_discrete(breaks = c("ShootRG","exp","exp2"),
+    labels = c("Obsesrved values",
+               "Current expected values",
+               "Alternative expected values")) +
+  xlab("Comparisons") +
+  ylab("Relative shoot growth") +
+  theme_bw()
+
+ggsave(p, file = "./compare_methods.png")
+
+lm <- lm(sqrt(value) ~ method, data = mixed.l)
+aov <- aov(lm)
+summary(aov)
+TukeyHSD(aov)
+```
