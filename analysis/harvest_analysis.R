@@ -14,6 +14,8 @@ library('tidyverse')
 library('FactoMineR')
 library('factoextra')
 library('corrplot')
+library('ggbeeswarm')
+library('ggbreak')
 
 # Necessary functions
 se <- function(x) sd(x, na.rm=TRUE)/sqrt(length(x))
@@ -54,14 +56,59 @@ response.plot <- function(dataset, y, x, order=NULL, fill=NULL){
   
   # Base-plot
   if (is.null(order) != T){
-    ggplot(agg, aes(x=x1, y=y, fill=f)) +
-      geom_bar(stat = "identity", position = "dodge", na.rm = T) + 
-      geom_errorbar(aes(ymin = y - se, ymax = y + se), position = position_dodge(width = 0.9), width = 0.2) +
+    ggplot() +
+      geom_bar(data = agg, aes(x=x1, y=y, fill=f), stat = "identity", position = "dodge", na.rm = T) + 
+      geom_errorbar(data = agg, aes(x=x1, y=y, ymin = y - se, ymax = y + se), position = position_dodge(width = 0.9), width = 0.2) +
       xlab(x) + ylab(y) + theme(legend.title = element_blank(), axis.text.x = element_text(angle=90))
   } else {
-    ggplot(agg, aes(x=x1, y=y)) +
+    ggplot() +
+      geom_bar(data = agg, aes(x=x1, y=y, fill=f), stat = "identity", position = "dodge", na.rm = T) + 
+      geom_errorbar(data = agg, aes(x=x1, y=y, ymin = y - se, ymax = y + se), position = position_dodge(width = 0.9), width = 0.2) +
+      xlab(x) + ylab(y) + theme(legend.title = element_blank(), axis.text.x = element_text(angle=90))
+  }
+  
+}
+
+# Generic function to automate plot
+response.plot2 <- function(dataset, y, x, order=NULL, fill=NULL){
+  if (is.null(order) != T & is.null(fill) != T){
+    temp.dataset <-dataset[, c(y, x, order, fill)]
+    colnames(temp.dataset) <- c("y", "x1", "o", 'f')
+  } else {
+    temp.dataset <- dataset[, c(y, x)]
+    colnames(temp.dataset) <- c("y", "x1")
+  }
+  
+  agg.mean <- aggregate(y ~ x1, data = temp.dataset, mean, 
+                        na.rm = T)
+  agg.se <- aggregate(y ~ x1, data = temp.dataset, se)
+  colnames(agg.se)[2] <- "se"
+  
+  if (is.null(order) != T){
+    agg.o <- aggregate(o ~ x1+f, data=temp.dataset, mean)
+    colnames(agg.o)[2] <- 'f'
+    colnames(agg.o)[3] <- 'o'
+  }
+  
+  agg <- merge(agg.mean, agg.se, by = "x1")
+  
+  # Reorder dataset
+  if (is.null(order) != T){
+    agg <- merge(agg, agg.o, by='x1')
+    agg <- transform(agg, x1=reorder(x1, -o))
+  }
+  
+  
+  # Base-plot
+  if (is.null(order) != T){
+    ggplot(data = agg, aes(x=x1, y=y, fill=f)) +
       geom_bar(stat = "identity", position = "dodge", na.rm = T) + 
-      geom_errorbar(aes(ymin = y - se, ymax = y + se), position = position_dodge(width = 0.9), width = 0.2) +
+      geom_errorbar(data = agg, aes(x=x1, y=y, ymin = y - se, ymax = y + se), position = position_dodge(width = 0.9), width = 0.2) +
+      xlab(x) + ylab(y) + theme(legend.title = element_blank(), axis.text.x = element_text(angle=90))
+  } else {
+    ggplot(data = agg, aes(x=x1, y=y, fill=f)) +
+      geom_bar(stat = "identity", position = "dodge", na.rm = T) + 
+      geom_errorbar(data = agg, aes(x=x1, y=y, ymin = y - se, ymax = y + se), position = position_dodge(width = 0.9), width = 0.2) +
       xlab(x) + ylab(y) + theme(legend.title = element_blank(), axis.text.x = element_text(angle=90))
   }
   
@@ -434,36 +481,37 @@ single.nod[which(single.nod$Fix == '+'),]$Fix <- 'Fix+'
 single.nod[which(single.nod$Fix == '-'),]$Fix <- 'Fix-'
 single.nod$Fix <- factor(single.nod$Fix, levels = c('Fix+', 'Fix-'))
 
-q1 <- response.plot(single.nod, 'ShootRG', 'treatment', 'ShootRG', 'Fix')
-q1$data
+q1 <- response.plot2(single.nod, 'ShootRG', 'treatment', 'ShootRG', 'Fix')
+#q1$data
 #q1$data[which(q1$data$f == '-'),]$f <- 'Fix-'
 #q1$data[which(q1$data$f == '+'),]$f <- 'Fix+'
 
 
-q1$data$sig <- c('*', '*', '*', 'NS', 'NS', 'NS', 'NS', '·')
+rg_sig <- data.frame(treatment=c(131,184,4,156,2,186,200,187),
+                     sig= c('*', '*', '*', 'NS', 'NS', 'NS', 'NS', '·'))
 
 
 
-q1 <- q1 + geom_hline(yintercept = 1, color='blue1') + ggtitle('a. Host Growth Benefit')+  ylab('Shoot RG') + xlab('Treatment') + 
+q1 <- q1 + geom_hline(yintercept = 1, color='blue1') + ggtitle('A. Host Growth Benefit')+  ylab('Shoot RG') + xlab('Treatment') + 
   geom_text(aes(y=y+se, label=sig), col='#8b0000', vjust= -0.05) +
   theme_bw() +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
   scale_fill_manual(values=c('#2E8B57', '#F8766D'))
 
-q2 <- response.plot(single.nod, 'total_nodules', 'treatment', 'ShootRG', 'Fix') +
+q2 <- response.plot2(single.nod, 'total_nodules', 'treatment', 'ShootRG', 'Fix') +
   ggtitle('B. Nodules Per Plant') + ylab('Average Nodules') + xlab('Treatment') + theme_bw() +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
   scale_fill_manual(values=c('#2E8B57', '#F8766D'))
 
-q3 <- response.plot(single.nod, 'mean_weight', 'treatment', 'ShootRG', 'Fix') + 
+q3 <- response.plot2(single.nod, 'mean_weight', 'treatment', 'ShootRG', 'Fix') + 
   ggtitle('C. Mean Fresh Nodule Biomass') + ylab('Mean Weight (mg)') + xlab('Treatment') + theme_bw() +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
   scale_fill_manual(values=c('#2E8B57', '#F8766D'))
 
-q4 <- response.plot(single.nod, 'investment', 'treatment', 'ShootRG', 'Fix') + 
+q4 <- response.plot2(single.nod, 'investment', 'treatment', 'ShootRG', 'Fix') + 
   ggtitle('D. Investment to Nodulation') + ylab('Nodule Biomass / Shoot Biomass') + xlab('Treatment') + theme_bw() +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
@@ -472,6 +520,51 @@ q4 <- response.plot(single.nod, 'investment', 'treatment', 'ShootRG', 'Fix') +
 ggarrange(q1, q2, q3, q4, nrow=2, ncol=2, common.legend=T, legend='top')
 
 
+# Main result figures with violin plot/jittered dataset
+q0 <- response.plot(single.nod, 'ShootRG', 'treatment', 'ShootRG', 'Fix')
+
+rg_sig <- data.frame(treatment=c('131','184','4','156','2','186','200','187'),
+                     rg =c(10.5, 9, 6, 4, 4, 3.5, 3, 1),
+                     sig= c('*', '*', '•', '*', 'NS', 'NS', 'NS', 'NS'))
+
+
+q1 <- q0 + 
+  geom_beeswarm(data=single.nod, aes(x=treatment, y=RG),size=1, alpha=0.3) +
+  geom_hline(yintercept = 1, color='blue1') + 
+  ggtitle('A. Host Growth Benefit')+  ylab('Shoot RG') + xlab('Treatment') + 
+  geom_text(data=rg_sig, aes(x=treatment, y=rg, label=sig), col='#8b0000', vjust= -0.05) +
+  theme_bw() + theme(plot.title = element_text(face = "bold")) +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  scale_fill_manual(values=c('#2E8B57', '#F8766D'))
+
+q2 <- response.plot(single.nod, 'total_nodules', 'treatment', 'ShootRG', 'Fix') + 
+  geom_beeswarm(data=single.nod, aes(x=treatment, y=total_nodules),size=1, alpha=0.3) +
+  ggtitle('B. Nodules Per Plant') + ylab('Average Nodules') + xlab('Treatment') + theme_bw() +
+  theme(plot.title = element_text(face = "bold")) +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  scale_fill_manual(values=c('#2E8B57', '#F8766D'))
+
+q3 <- response.plot(single.nod, 'mean_weight', 'treatment', 'ShootRG', 'Fix') + 
+  geom_beeswarm(data=single.nod, aes(x=treatment, y=mean_weight),size=1, alpha=0.3) +
+  ggtitle('C. Mean Fresh Nodule Biomass') + ylab('Mean Weight (mg)') + xlab('Treatment') + theme_bw() +
+  theme(plot.title = element_text(face = "bold")) +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  scale_fill_manual(values=c('#2E8B57', '#F8766D'))
+
+q4 <- response.plot(single.nod, 'investment', 'treatment', 'ShootRG', 'Fix') + 
+  geom_beeswarm(data=single.nod, aes(x=treatment, y=investment),size=1, alpha=0.3) +
+  ggtitle('D. Investment to Nodulation') + ylab('Nodule Biomass / Shoot Biomass') + xlab('Treatment') + theme_bw() +
+  theme(plot.title = element_text(face = "bold")) +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  scale_fill_manual(values=c('#2E8B57', '#F8766D'))
+
+ggarrange(q1, q2, q3, q4, nrow=2, ncol=2, common.legend=T, legend='top')
+
+# Estimated marginal means
 emm <- emmeans(mod.invest, pairwise~treatment:elapsed_dpi, type='response')
 emm$emmeans
 
@@ -500,24 +593,28 @@ p1$data$sig <- c('*','NS','*','.','NS','NS','.','*','NS','.','NS','NS','*','NS',
 p1 <- p1 + 
   geom_hline(yintercept = 1, color='blue1') + ggtitle('a. Host Growth Benefit') + xlab('Treatment') + ylab('Shoot RG') +
   geom_text(aes(y=y+se, label=sig), col='#8b0000', vjust= -0.25) + theme_bw() +
+  theme(plot.title = element_text(face = "bold")) +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
   scale_fill_manual(values=c('#228B22', '#364ADD', '#F8766D'))
 p2 <- response.plot(coinoc.nod, 'total_nodules', 'treatment', 'ShootRG', 'Fix') +
   ggtitle('b. Nodules Per Plant')  + xlab('Treatment') +
   theme(legend.position='none') + ylab('Average Nodules') + theme_bw() +
+  theme(plot.title = element_text(face = "bold")) +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
   scale_fill_manual(values=c('#228B22', '#364ADD', '#F8766D'))
 p3 <- response.plot(coinoc.nod, 'mean_weight', 'treatment', 'ShootRG', 'Fix') +
   ggtitle('c. Mean Fresh Nodule Biomass')  + xlab('Treatment') +
   theme(legend.position='none') + ylab('Mean Weight (mg)') + theme_bw() +
+  theme(plot.title = element_text(face = "bold")) +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
   scale_fill_manual(values=c('#228B22', '#364ADD', '#F8766D'))
 p4 <- response.plot(coinoc.nod, 'investment', 'treatment', 'ShootRG', 'Fix') +
   ggtitle('d. Investment to Nodulation')  +
   theme(legend.position='none') + ylab('Nodule Biomass / Shoot Biomass') + xlab('Treatment') + theme_bw() +
+  theme(plot.title = element_text(face = "bold")) +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
   scale_fill_manual(values=c('#228B22', '#0096FF', '#F8766D'))
@@ -528,9 +625,72 @@ ggarrange(p1, p2, p3, p4, nrow=2, ncol=2, common.legend = T, legend='top')
 p5 <- response.plot(coinoc.nod, 'AreaMM', 'treatment', 'ShootRG', 'Fix')
 p6 <- response.plot(coinoc.nod, 'dryMass', 'treatment', 'ShootRG', 'Fix')
 
+# Main result figure with datapoints
+p0 <- response.plot(coinoc.nod, 'ShootRG', 'treatment', 'ShootRG', 'Fix')
+coinoc_rg <- data.frame(signf <- c('•', '*', '•', '*', '*', '*', '*', '*', '•', '•', '*', '*', 'NS', 'NS', 'NS', 'NS', 'NS', 'NS', 'NS', 'NS', 'NS', 'NS', 'NS', 'NS', 'NS', 'NS', 'NS', 'NS' ),
+                        treatment <- c('184+200', '4+200', '187+184', '186+4', '131+187','4+131',
+                                       '4+184', '4+187', '131+200', '186+184', '131+156', '186+131', '2+184', '2+131',
+                                       '156+184', '4+156', '2+4', '156+200', '131+184', '186+187',
+                                       '187+156', '186+200', '2+186', '186+156', '2+156', '2+200',
+                                       '187+200', '2+187'),
+                        y <- c(7.5, 6, 6.5, 6.5, 5.5, 5.5, 5, 5, 5, 5, 
+                               4.5, 4.4, 4, 4, 3.5, 3, 2.8, 2.5, 2.3, 2.2, 
+                               2, 2, 1, 1, 1, 1, 1, 1))
+
+p1 <- p0 + 
+  geom_beeswarm(data=coinoc.nod, aes(x=treatment, y=ShootRG), size=1, alpha=0.3) +
+  geom_hline(yintercept = 1, color='blue1') + ggtitle('A. Host Growth Benefit') + xlab('Treatment') + ylab('Shoot RG') +
+  geom_text(data=coinoc_rg, aes(y=y, x=treatment, label=signf), col='#8b0000', vjust= -0.25) +
+  theme_bw() + theme(plot.title = element_text(face = "bold")) +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+  theme(legend.position='none') + 
+  scale_fill_manual(values=c('#228B22', '#0096FF', '#F8766D'))
+p2 <- response.plot(coinoc.nod, 'total_nodules', 'treatment', 'ShootRG', 'Fix') +
+  geom_beeswarm(data=coinoc.nod, aes(x=treatment, y=total_nodules), size=1, alpha=0.3) +
+  ggtitle('B. Nodules Per Plant')  + xlab('Treatment') +
+  ylab('Average Nodules') + theme_bw() +
+  theme(plot.title = element_text(face = "bold")) +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+  theme(legend.position='none') + 
+  scale_fill_manual(values=c('#228B22', '#0096FF', '#F8766D'))
+
+p3 <- response.plot(coinoc.nod, 'mean_weight', 'treatment', 'ShootRG', 'Fix') +
+  geom_beeswarm(data=coinoc.nod, aes(x=treatment, y=mean_weight), size=1, alpha=0.3) +
+  ggtitle('C. Mean Fresh Nodule Biomass')  + xlab('Treatment') +
+  scale_y_break(breaks = c(8, 18)) +
+  ylab('Mean Weight (mg)') + theme_bw() +
+  theme(plot.title = element_text(face = "bold")) +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+  theme(legend.position='none') + 
+  scale_fill_manual(values=c('#228B22', '#0096FF', '#F8766D'))
+
+
+p4 <- response.plot(coinoc.nod, 'investment', 'treatment', 'ShootRG', 'Fix') +
+  geom_beeswarm(data=coinoc.nod, aes(x=treatment, y=investment), size=1, alpha=0.3) +
+  ggtitle('D. Investment to Nodulation')  +
+  ylab('Nodule Biomass / Shoot Biomass') + xlab('Treatment') + theme_bw() +
+  theme(plot.title = element_text(face = "bold")) +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+  theme(legend.position='none') + 
+  scale_fill_manual(values=c('#228B22', '#0096FF', '#F8766D'))
+
+ggarrange(print(p1), print(p2), print(p3), print(p4), nrow=2, ncol=2, common.legend = T, legend='top')
+
 # Heatmap 
 # Main result figure
-colnames(p1$data) <- c('treatment', 'ShootRG_mean', 'ShootRG_se', 'group', 'ShootRG', 'ShootRG_p')
+p1 <- response.plot2(coinoc.nod, 'ShootRG', 'treatment', 'ShootRG', 'Fix')
+p2 <- response.plot2(coinoc.nod, 'total_nodules', 'treatment', 'ShootRG', 'Fix')
+p3 <- response.plot2(coinoc.nod, 'mean_weight', 'treatment', 'ShootRG', 'Fix')
+p4 <- response.plot2(coinoc.nod, 'investment', 'treatment', 'ShootRG', 'Fix')
+p5 <- response.plot2(coinoc.nod, 'AreaMM', 'treatment', 'ShootRG', 'Fix')
+p6 <- response.plot2(coinoc.nod, 'dryMass', 'treatment', 'ShootRG', 'Fix')
+
+
+colnames(p1$data) <- c('treatment', 'ShootRG_mean', 'ShootRG_se', 'group', 'ShootRG')
 colnames(p2$data) <- c('treatment', 'Nodules_mean', 'Nodules_se', 'group', 'Nodules')
 colnames(p3$data) <- c('treatment', 'NoduleWeight_mean', 'NoduleWeight_se', 'group', 'NoduleWeight')
 colnames(p4$data) <- c('treatment', 'Investment_mean', 'Investment_se', 'group', 'Investment')
@@ -560,16 +720,18 @@ ggplot(group.heatmap, aes(y=factor(variable, level=variable_order), x=Treatment,
   scale_fill_gradient2(low = "#075AFF",
                        mid = "#FFFFCC",
                        high = "#FF0000") +
+  ggtitle('E. Heatmap Comparison of Response Variables') +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1), 
         strip.text.x = element_text(size = 14)) +
+  theme(plot.title = element_text(face = "bold")) +
   facet_grid(~Group, scales="free_x", space='free_x') +
-  labs(fill='Z-Score') + ylab('') + ggtitle('e. Heatmap Comparison of Response Variables')
+  labs(fill='Z-Score') + ylab('') 
 
 # Grouping the dataset by Single-effectivity combination
-p1 <- response.plot(coinoc.nod, 'ShootRG', 'treatment', 'ShootRG', 'Fix')
-p2 <- response.plot(coinoc.nod, 'total_nodules', 'treatment', 'ShootRG', 'Fix')
-p3 <- response.plot(coinoc.nod, 'mean_weight', 'treatment', 'ShootRG', 'Fix')
-p4 <- response.plot(coinoc.nod, 'investment', 'treatment', 'ShootRG', 'Fix')
+p1 <- response.plot2(coinoc.nod, 'ShootRG', 'treatment', 'ShootRG', 'Fix')
+p2 <- response.plot2(coinoc.nod, 'total_nodules', 'treatment', 'ShootRG', 'Fix')
+p3 <- response.plot2(coinoc.nod, 'mean_weight', 'treatment', 'ShootRG', 'Fix')
+p4 <- response.plot2(coinoc.nod, 'investment', 'treatment', 'ShootRG', 'Fix')
 
 
 p1.summary <- as.data.frame(as.matrix(aggregate(y~f, data= p1$data, FUN=function(x) c(mean=mean(x), se= se(x)))))
@@ -605,35 +767,35 @@ ggarrange(p1s, p2s, p3s, p4s, nrow=2, ncol=2, common.legend = T, legend='top')
 compare_means(y~f, data=p1$data)
 
 q1 <- ggbarplot(p1$data, x='f', y='y', fill='f', add='mean_se') +
-  stat_compare_means(method='t.test', comparisons= list(c('+/+', '+/-'),
-                                                        c('+/+', '-/-'),
-                                                        c('+/-', '-/-'))) +
+  stat_compare_means(method='t.test', comparisons= list(c('Fix+/Fix+', 'Fix+/Fix-'),
+                                                        c('Fix+/Fix+', 'Fix-/Fix-'),
+                                                        c('Fix+/Fix-', 'Fix-/Fix-'))) +
   theme(legend.position='none', legend.title=element_blank()) +
-  xlab('Strain Fix Trait Combinations') + ylab('Shoot RG') + ggtitle('a. Host Growth Benefit') +
+  xlab('Strain Fix Trait Combinations') + ylab('Shoot RG') + ggtitle('A. Host Growth Benefit') +
   scale_fill_manual(values=c('#00BA38', '#619CFF', '#F8766D'))
 
 q2 <- ggbarplot(p2$data, x='f', y='y', fill='f', add='mean_se') + 
-  stat_compare_means(method='t.test', comparisons= list(c('+/+', '+/-'),
-                                                        c('+/+', '-/-'),
-                                                        c('+/-', '-/-'))) +
+  stat_compare_means(method='t.test', comparisons= list(c('Fix+/Fix+', 'Fix+/Fix-'),
+                                                        c('Fix+/Fix+', 'Fix-/Fix-'),
+                                                        c('Fix+/Fix-', 'Fix-/Fix-'))) +
   theme(legend.position='none', legend.title=element_blank()) +
-  xlab('Strain Fix Trait Combinations') + ylab('Total Nodules') + ggtitle('b. Nodulation') +
+  xlab('Strain Fix Trait Combinations') + ylab('Total Nodules') + ggtitle('B. Nodulation') +
   scale_fill_manual(values=c('#00BA38', '#619CFF', '#F8766D'))
 
 q3 <- ggbarplot(p3$data, x='f', y='y', fill='f', add='mean_se') + 
-  stat_compare_means(method='t.test', comparisons= list(c('+/+', '+/-'),
-                                                        c('+/+', '-/-'),
-                                                        c('+/-', '-/-'))) +
+  stat_compare_means(method='t.test', comparisons= list(c('Fix+/Fix+', 'Fix+/Fix-'),
+                                                        c('Fix+/Fix+', 'Fix-/Fix-'),
+                                                        c('Fix+/Fix-', 'Fix-/Fix-'))) +
   theme(legend.position='none', legend.title=element_blank()) +
-  xlab('Strain Fix Trait Combinations') + ylab('Nodule Weight  (mg)') + ggtitle('c. Mean Fresh Nodule Biomass') +
+  xlab('Strain Fix Trait Combinations') + ylab('Nodule Weight  (mg)') + ggtitle('C. Mean Fresh Nodule Biomass') +
   scale_fill_manual(values=c('#00BA38', '#619CFF', '#F8766D'))
 
 q4 <- ggbarplot(p4$data, x='f', y='y', fill='f', add='mean_se') +  
-  stat_compare_means(method='t.test', comparisons= list(c('+/+', '+/-'),
-                                                        c('+/+', '-/-'),
-                                                        c('+/-', '-/-'))) +
+  stat_compare_means(method='t.test', comparisons= list(c('Fix+/Fix+', 'Fix+/Fix-'),
+                                                        c('Fix+/Fix+', 'Fix-/Fix-'),
+                                                        c('Fix+/Fix-', 'Fix-/Fix-'))) +
   theme(legend.position='none', legend.title=element_blank()) +
-  xlab('Strain Fix Trait Combinations') + ylab('Investment') + ggtitle('d. Investment to Nodulation') +
+  xlab('Strain Fix Trait Combinations') + ylab('Investment') + ggtitle('D. Investment to Nodulation') +
   scale_fill_manual(values=c('#00BA38', '#619CFF', '#F8766D'))
 
   
@@ -738,114 +900,140 @@ harvest.nod[which(harvest.nod$elapsed_dpi > 55), ]$harvest_batch <- 2
 
 
 # RG modeling
-  hist(log10(harvest.nod$ShootRG+0.5))
-  mod.rg.3 <- lm(log10(ShootRG+0.5) ~ elapsed_dpi + treatment , data=harvest.nod)
-  summary(mod.rg.3)
-  shapiro.test(residuals(mod.rg.3))
-  autoplot(mod.rg.3)
-  
-  summary(aov(mod.rg.3))
-  Anova(mod.rg.3, type='III')
-  
-  
-  #Anova(mod.rg.3, type='III', singular.ok=T)
-  
-  #pwc <- emmeans_test(data=harvest.coinoc,
-  #  ShootRG ~ treatment, covariate = elapsed_dpi,
-  #  p.adjust.method='bonferroni'
-  #)
-  #cld(get_emmeans(pwc))
-  
-  # Posthoc test
-  cld(emmeans(mod.rg.3, ~treatment:elapsed_dpi, type='response'), decreasing=T)
-  cld(emmeans(mod.rg.3, ~treatment, type='response'), decreasing=T)
-  emm <- emmeans(mod.rg.3, pairwise~treatment:elapsed_dpi, type='response')
-  plot(emm, comparison=T)
-  contrasts <- summary(emm$contrasts)
-  contrasts[which(contrasts$p.value <= 0.05), ]
-  
-  p1 <- response.plot(harvest.nod[order(harvest.nod$ShootRG),], 'ShootRG', 'treatment', 'ShootRG', 'Co_effectivity') +
-    #geom_text(aes(label=c(9,789,23456789,89,456789,12345678,456789,23456789,6789,6789,1234,6789,12345678,6789,1234567,
-    #                      12345678,56789,1,12345678,23456789,123456,123,23456789,12345678,3456789,123456,
-    #                      12345,1234567,23456789,12,23456789,789,23456789,89,6789,9), vjust=-2)) + 
-    ggtitle('A. Symbiotic Benefit') + xlab('')
-  
-  
+hist(log10(harvest.nod$ShootRG+0.5))
+mod.rg.3 <- lm(log10(ShootRG+0.5) ~ elapsed_dpi + treatment , data=harvest.nod)
+summary(mod.rg.3)
+shapiro.test(residuals(mod.rg.3))
+autoplot(mod.rg.3)
+
+summary(aov(mod.rg.3))
+Anova(mod.rg.3, type='III')
+
+
+#Anova(mod.rg.3, type='III', singular.ok=T)
+
+#pwc <- emmeans_test(data=harvest.coinoc,
+#  ShootRG ~ treatment, covariate = elapsed_dpi,
+#  p.adjust.method='bonferroni'
+#)
+#cld(get_emmeans(pwc))
+
+# Posthoc test
+cld(emmeans(mod.rg.3, ~treatment:elapsed_dpi, type='response'), decreasing=T)
+cld(emmeans(mod.rg.3, ~treatment, type='response'), decreasing=T)
+emm <- emmeans(mod.rg.3, pairwise~treatment:elapsed_dpi, type='response')
+plot(emm, comparison=T)
+contrasts <- summary(emm$contrasts)
+contrasts[which(contrasts$p.value <= 0.05), ]
+
+p1 <- response.plot(harvest.nod[order(harvest.nod$ShootRG),], 'ShootRG', 'treatment', 'ShootRG', 'Co_effectivity') +
+  #geom_text(aes(label=c(9,789,23456789,89,456789,12345678,456789,23456789,6789,6789,1234,6789,12345678,6789,1234567,
+  #                      12345678,56789,1,12345678,23456789,123456,123,23456789,12345678,3456789,123456,
+  #                      12345,1234567,23456789,12,23456789,789,23456789,89,6789,9), vjust=-2)) + 
+  ggtitle('A. Symbiotic Benefit') + xlab('')
+
+
 
 # Total nodules
-  hist(sqrt(harvest.nod$total_nodules))
-  mod.nod.3 <- lm(sqrt(total_nodules) ~ elapsed_dpi + treatment, data=harvest.nod)
-  summary(mod.nod.3)
-  shapiro.test(residuals(mod.nod.3))
-  autoplot(mod.nod.3)
-  
-  summary(aov(mod.nod.3))
-  Anova(mod.nod.3, type='III', singular.ok=T)
-  
-  # Posthoc
-  emm <- emmeans(mod.nod.3, pairwise~treatment:elapsed_dpi, type='response')
-  plot(emm, comparison=T)
-  contrasts <- summary(emm$contrasts)
-  contrasts[which(contrasts$p.value <= 0.05), ]
-  
-  p2 <- response.plot(harvest.nod[order(harvest.nod$ShootRG),], 'total_nodules', 'treatment', 'ShootRG', 'Co_effectivity') +
-    ggtitle('B. Nodulation') + xlab('')
-  
-  grid.arrange(p1, p2, nrow=2)
+hist(sqrt(harvest.nod$total_nodules))
+mod.nod.3 <- lm(sqrt(total_nodules) ~ elapsed_dpi + treatment, data=harvest.nod)
+summary(mod.nod.3)
+shapiro.test(residuals(mod.nod.3))
+autoplot(mod.nod.3)
+
+summary(aov(mod.nod.3))
+Anova(mod.nod.3, type='III', singular.ok=T)
+
+# Posthoc
+emm <- emmeans(mod.nod.3, pairwise~treatment:elapsed_dpi, type='response')
+plot(emm, comparison=T)
+contrasts <- summary(emm$contrasts)
+contrasts[which(contrasts$p.value <= 0.05), ]
+
+p2 <- response.plot(harvest.nod[order(harvest.nod$ShootRG),], 'total_nodules', 'treatment', 'ShootRG', 'Co_effectivity') +
+  ggtitle('B. Nodulation') + xlab('')
+
+grid.arrange(p1, p2, nrow=2)
 
 # Mean weight
-  hist(log(harvest.nod$mean_weight+0.5))
-  mod.weight.3 <- lm(log(mean_weight+0.1) ~ elapsed_dpi + treatment, data=harvest.nod)
-  summary(mod.weight.3)
-  shapiro.test(residuals(mod.weight.3))
-  hist(residuals(mod.weight.3))
-  autoplot(mod.weight.3)
-  
-  summary(aov(mod.weight.3))
-  Anova(aov(mod.weight.3), type='III')
-  
-  # Posthoc
-  emm <- emmeans(mod.weight.3, pairwise~treatment:elapsed_dpi, type='response')
-  plot(emm, comparison=T)
-  contrasts <- summary(emm$contrasts)
-  dim(contrasts[which(contrasts$p.value <= 0.05), ])
-  
-  p3 <- response.plot(harvest.nod[order(harvest.nod$ShootRG),], 'mean_weight', 'treatment', 'ShootRG', 'Co_effectivity') +
-    ggtitle('C. Mean Fresh Nodule Weight') + xlab('')
+hist(log(harvest.nod$mean_weight+0.5))
+mod.weight.3 <- lm(log(mean_weight+0.1) ~ elapsed_dpi + treatment, data=harvest.nod)
+summary(mod.weight.3)
+shapiro.test(residuals(mod.weight.3))
+hist(residuals(mod.weight.3))
+autoplot(mod.weight.3)
 
-  # Investment
-  hist(harvest.nod$investment)
-  hist(log(harvest.nod$investment+0.2))
-  mod.invest.3 <- lm(log(investment+0.2) ~ elapsed_dpi + treatment, data=harvest.nod)
-  summary(mod.invest.3)
-  shapiro.test(residuals(mod.invest.3))
-  hist(residuals(mod.invest.3))
-  autoplot(mod.invest.3)
-  
-  summary(aov(mod.invest.3))
-  Anova(mod.invest.3, type='III')
-  
-  # Posthoc
-  emm <- emmeans(mod.invest.3, pairwise~treatment:elapsed_dpi, type='response')
-  plot(emm, comparison=T)
-  contrasts <- summary(emm$contrasts)
-  contrasts[which(contrasts$p.value <= 0.05), ]
-  
-  p4 <- response.plot(harvest.nod[order(harvest.nod$ShootRG),], 'investment', 'treatment', 'ShootRG', 'Co_effectivity') +
-    ggtitle('D. Investment to Nodulation') + xlab('Treatment')
-  
-  
-  grid.arrange(p3, p4, nrow=2)
-  
-  ## Testing N-fixing effectiveness
-  t.test(harvest.nod[which(harvest.nod$treatment == '186+187'), ]$ShootRG, mu=1, alternative = 'greater')
-  
-  #
-  glm.invest <- glm(investment ~ treatment + harvest_batch, data=harvest.nod, family=poisson(link='log'))
-  summary(glm.invest)
-  autoplot(glm.invest)
-  shapiro.test(residuals(glm.invest))
-  Anova(glm.invest, type='III', singular.ok = T)
+summary(aov(mod.weight.3))
+Anova(aov(mod.weight.3), type='III')
+
+# Posthoc
+emm <- emmeans(mod.weight.3, pairwise~treatment:elapsed_dpi, type='response')
+plot(emm, comparison=T)
+contrasts <- summary(emm$contrasts)
+dim(contrasts[which(contrasts$p.value <= 0.05), ])
+
+p3 <- response.plot(harvest.nod[order(harvest.nod$ShootRG),], 'mean_weight', 'treatment', 'ShootRG', 'Co_effectivity') +
+  ggtitle('C. Mean Fresh Nodule Weight') + xlab('')
+
+# Investment
+hist(harvest.nod$investment)
+hist(log(harvest.nod$investment+0.2))
+mod.invest.3 <- lm(log(investment+0.2) ~ elapsed_dpi + treatment, data=harvest.nod)
+summary(mod.invest.3)
+shapiro.test(residuals(mod.invest.3))
+hist(residuals(mod.invest.3))
+autoplot(mod.invest.3)
+
+summary(aov(mod.invest.3))
+Anova(mod.invest.3, type='III')
+
+# Posthoc
+emm <- emmeans(mod.invest.3, pairwise~treatment:elapsed_dpi, type='response')
+plot(emm, comparison=T)
+contrasts <- summary(emm$contrasts)
+contrasts[which(contrasts$p.value <= 0.05), ]
+
+p4 <- response.plot(harvest.nod[order(harvest.nod$ShootRG),], 'investment', 'treatment', 'ShootRG', 'Co_effectivity') +
+  ggtitle('D. Investment to Nodulation') + xlab('Treatment')
+
+
+grid.arrange(p3, p4, nrow=2)
+
+## Testing N-fixing effectiveness
+library(reshape2)
+
+t.test(harvest.nod[which(harvest.nod$treatment == '186+187'), ]$ShootRG, mu=1, alternative = 'greater')
+
+harvest.RG <- harvest.nod[,c('treatment','ShootRG')]
+harvest.RG$exp <- 'Co'
+harvest.RG[which(harvest.RG$treatment %in% c(2, 4, 131, 156, 184, 187, 187, 200)),]$exp <- 'Single'
+
+t_test_summary <- data.frame(treatment=NA, p_val=NA)
+
+for (t in unique(harvest.RG$treatment)){
+  p_value <- t.test(harvest.RG[which(harvest.RG$treatment == t), ]$ShootRG, mu=1, alternative = 'greater')$p.value
+  t_test_summary <- rbind(t_test_summary, data.frame(treatment=t, p_val=p_value))
+}
+
+t_test_summary$exp <- 'Co'
+t_test_summary[which(t_test_summary$treatment %in% c(2, 4, 131, 156, 184, 187, 187, 200)),]$exp <- 'Single'
+t_test_summary <- t_test_summary[-1,]
+
+# subset
+t_test_summary.single <- t_test_summary[which(t_test_summary$exp == 'Single'),]
+t_test_summary.co <- t_test_summary[which(t_test_summary$exp != 'Single'),]
+
+t_test_summary.single$p_val
+p.adjust(t_test_summary.single$p_val, method="bonferroni")
+
+t_test_summary.co$p_val
+p.adjust(t_test_summary.co$p_val, method="bonferroni")
+#
+glm.invest <- glm(investment ~ treatment + harvest_batch, data=harvest.nod, family=poisson(link='log'))
+summary(glm.invest)
+autoplot(glm.invest)
+shapiro.test(residuals(glm.invest))
+Anova(glm.invest, type='III', singular.ok = T)
   
 ###########
 # ANCOVA
@@ -926,7 +1114,7 @@ shapiro.test(residuals(mod.rg))
 #######################################################
 # Comparing single predicted with actual RG in coinoc #
 #######################################################
-single.response <- response.plot(single.nod, 'ShootRG', 'treatment', 'ShootRG', 'Single_effectivity') + 
+single.response <- response.plot2(single.nod, 'ShootRG', 'treatment', 'ShootRG', 'Single_effectivity') + 
   geom_hline(yintercept = 1, color='coral')
 single.response <- single.response$data
 
@@ -939,7 +1127,7 @@ abundance$percentA <- (abundance$A / abundance$sum) + ((abundance$A.B / abundanc
 abundance$percentB <- (abundance$B / abundance$sum) + ((abundance$A.B / abundance$sum)/2)
 
 
-co.response.rg <- response.plot(coinoc.nod, 'ShootRG', 'treatment', 'ShootRG', 'Single_effectivity') + geom_hline(yintercept = 1, color='coral')
+co.response.rg <- response.plot2(coinoc.nod, 'ShootRG', 'treatment', 'ShootRG', 'Single_effectivity') + geom_hline(yintercept = 1, color='coral')
 co.response.rg <- co.response.rg$data
 
 co.response.rg$decouple <- strsplit(as.character(co.response.rg$x1), '[+]' )
@@ -1083,10 +1271,10 @@ summary(posthocs)
 # Comparing single predicted with actual nodules in coinoc #
 ############################################################
 
-single.response <- response.plot(single.nod, 'total_nodules', 'treatment', 'ShootRG', 'Single_effectivity') + geom_hline(yintercept = 1, color='coral')
+single.response <- response.plot2(single.nod, 'total_nodules', 'treatment', 'ShootRG', 'Single_effectivity') + geom_hline(yintercept = 1, color='coral')
 single.response <- single.response$data
 
-co.response.nod <- response.plot(coinoc.nod, 'total_nodules', 'treatment', 'ShootRG', 'Single_effectivity') + geom_hline(yintercept = 1, color='coral')
+co.response.nod <- response.plot2(coinoc.nod, 'total_nodules', 'treatment', 'ShootRG', 'Single_effectivity') + geom_hline(yintercept = 1, color='coral')
 co.response.nod <- co.response.nod$data
 
 co.response.nod$decouple <- strsplit(as.character(co.response.nod$x1), '[+]' )
@@ -1317,10 +1505,10 @@ library(stringr)
 #nod.clean.single <- nod.clean %>% filter(str_detect(treatment, "\\+", negate=T))
 #nod.clean.coinoc <- nod.clean %>% filter(str_detect(treatment, "\\+"))
 
-single.response <- response.plot(single.nod, 'AreaMM', 'treatment')
+single.response <- response.plot2(single.nod, 'AreaMM', 'treatment', 'ShootRG', 'Single_effectivity')
 single.response <- single.response$data
 
-co.response.area <- response.plot(coinoc.nod, 'AreaMM', 'treatment')
+co.response.area <- response.plot2(coinoc.nod, 'AreaMM', 'treatment', 'ShootRG', 'Single_effectivity')
 co.response.area <- co.response.area$data
 
 co.response.area$decouple <- strsplit(as.character(co.response.area$x1), '[+]' )
@@ -1415,17 +1603,20 @@ co.response.rg$x1 <- factor(co.response.rg$x1, levels=c('4+200', '186+4', '187+2
                                                      '2+4', '131+187', '4+131', '2+184', '131+200', 
                                                      '186+131', '2+131',  '131+184'))
   
-a0 <- ggplot(co.response.rg[which(co.response.rg$x1 != '131+156'),], aes(x=x1, y=diff)) + 
+a0 <- ggplot(co.response.rg[which(co.response.rg$x1 != '131+156'),], aes(x=x1, y=diff, fill=f)) + 
   #geom_bar(stat='identity', aes( fill =ifelse(percent_pvalue <= 0.05, 'green', 'red'))) +
-  geom_bar(stat='identity', fill='#228B22') +
+  #geom_bar(stat='identity', fill='#228B22') +
+  geom_bar(stat='identity') +
   geom_errorbar(aes(ymin=diff - percent_confint, ymax=diff+percent_confint), color='grey', width=0.2) +
   geom_text(aes(label=ifelse(percent_pvalue <= 0.05, '*', '')),color='red', position = position_dodge(width = .9), vjust = 1, size = 20 / .pt) +
-  scale_fill_manual(labels = c('Suboptimal', 'Optimal'), values=c('tomato2', 'turquoise3')) +
+  scale_fill_manual(labels = c("Fix+/Fix+", "Fix+/Fix-", "Fix-/Fix-"), values=c('#228B22', '#0096FF', '#F8766D')) +
+  #scale_fill_manual(labels = c('Suboptimal', 'Optimal'), values=c('tomato2', 'turquoise3')) +
   labs(fill='Performance')+
   ylab('Difference') + xlab('Treatments') +
-  ggtitle('a. Observed Shoot RG - Expected Shoot RG') + theme_bw() +
+  ggtitle('A. Observed Shoot RG - Expected Shoot RG') + theme_bw() + theme(legend.position='none') +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
-        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+  theme(plot.title = element_text(face = "bold")) 
 
 co.response.nod$diff <- co.response.nod$y - co.response.nod$percent_predict
 co.response.nod$x1 <- factor(co.response.nod$x1, levels=c('4+200', '186+4', '187+200', '4+187', 
@@ -1437,17 +1628,18 @@ co.response.nod$x1 <- factor(co.response.nod$x1, levels=c('4+200', '186+4', '187
                                                         '186+131', '2+131',  '131+184'))
 
 
-a1 <- ggplot(co.response.nod[which(co.response.nod$x1 != '131+156'),], aes(x=x1, y=diff)) + 
+a1 <- ggplot(co.response.nod[which(co.response.nod$x1 != '131+156'),], aes(x=x1, y=diff, fill=f)) + 
   #geom_bar(stat='identity', aes( fill =ifelse(t_p_percent <= 0.05, 'green', 'red'))) +
-  geom_bar(stat='identity', fill='#228B22') +
+  geom_bar(stat='identity') +
   geom_errorbar(aes(ymin=diff - t_confint_percent, ymax= diff + t_confint_percent), width=.2, colour='grey') +
   geom_text(aes(label=ifelse(t_p_percent <= 0.05, '*', '')),color='red', position = position_dodge(width = .9), vjust = 1, size = 20 / .pt) +
-  scale_fill_manual(labels = c('Significant', 'Non-significant'), values=c('tomato2', 'turquoise3')) +
+  scale_fill_manual(labels = c("Fix+/Fix+", "Fix+/Fix-", "Fix-/Fix-"), values=c('#228B22', '#0096FF', '#F8766D')) +
   labs(fill='Difference')+
   ylab('Difference') + xlab('Treatments') +
-  ggtitle('b. Observed total nodules - Expected total nodules') + theme_bw() +
+  ggtitle('B. Observed total nodules - Expected total nodules') + theme_bw() + theme(legend.position='none') +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
-        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+  theme(plot.title = element_text(face = "bold")) 
 
 
 
@@ -1460,17 +1652,18 @@ co.response.mw$x1 <- factor(co.response.mw$x1, levels=c('4+200', '186+4', '187+2
                                                         '2+4', '131+187', '4+131', '2+184', '131+200', 
                                                         '186+131', '2+131',  '131+184'))
 
-a2 <- ggplot(co.response.mw[which(co.response.mw$x1 != '131+156'),], aes(x=x1, y=diff)) + 
+a2 <- ggplot(co.response.mw[which(co.response.mw$x1 != '131+156'),], aes(x=x1, y=diff, fill=f)) + 
   #geom_bar(stat='identity', aes( fill =ifelse(t_p_percent <= 0.05, 'green', 'red'))) +
-  geom_bar(stat='identity', fill='#228B22') +
+  geom_bar(stat='identity') +
   geom_errorbar(aes(ymin=diff - t_confint_percent, ymax= diff + t_confint_percent), width=.2, colour='grey') +
   geom_text(aes(label=ifelse(t_p_percent <= 0.05, '*', '')),color='red', position = position_dodge(width = .9), vjust = 1, size = 20 / .pt) +
-  scale_fill_manual(labels = c('Significant', 'Non-significant'), values=c('tomato2', 'turquoise3')) +
+  scale_fill_manual(labels = c("Fix+/Fix+", "Fix+/Fix-", "Fix-/Fix-"), values=c('#228B22', '#0096FF', '#F8766D')) +
   labs(fill='Difference')+
   ylab('Difference') + xlab('Treatments') +
-  ggtitle('d. Observed mean weight - Expected mean weight')  + theme_bw() +
+  ggtitle('D. Observed mean weight - Expected mean weight')  + theme_bw() + theme(legend.position='none') +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
-        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+  theme(plot.title = element_text(face = "bold")) 
 
 co.response.area$diff <- co.response.area$y - co.response.area$percent_predict
 co.response.area$x1 <- factor(co.response.area$x1, levels=c('4+200', '186+4', '187+200', '4+187', 
@@ -1481,19 +1674,20 @@ co.response.area$x1 <- factor(co.response.area$x1, levels=c('4+200', '186+4', '1
                                                         '2+4', '131+187', '4+131', '2+184', '131+200', 
                                                         '186+131', '2+131',  '131+184'))
 
-a3 <- ggplot(co.response.area[which(co.response.area$x1 != '131+156'),], aes(x=x1, y=diff)) + 
+a3 <- ggplot(co.response.area[which(co.response.area$x1 != '131+156'),], aes(x=x1, y=diff, fill=f)) + 
   #geom_bar(stat='identity', aes( fill =ifelse(t_p_percent <= 0.05, 'green', 'red'))) +
-  geom_bar(stat='identity', fill='#228B22') +
+  geom_bar(stat='identity') +
   geom_errorbar(aes(ymin=diff - t_confint_percent, ymax= diff + t_confint_percent), width=.2, colour='grey') +
   geom_text(aes(label=ifelse(t_p_percent <= 0.05, '*', '')),color='red', position = position_dodge(width = .9), vjust = 1, size = 20 / .pt) +
-  scale_fill_manual(labels = c('Significant', 'Non-significant'), values=c('tomato2', 'turquoise3')) +
+  scale_fill_manual(labels = c("Fix+/Fix+", "Fix+/Fix-", "Fix-/Fix-"), values=c('#228B22', '#0096FF', '#F8766D')) +
   labs(fill='Difference')+ ylab('Difference') + xlab('Treatments') +
-  ggtitle('c. Observed nodule area - Expected nodule area')  + theme_bw() +
+  ggtitle('C. Observed nodule area - Expected nodule area')  + theme_bw() + theme(legend.position='none') +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
-        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+  theme(plot.title = element_text(face = "bold")) 
 
 #grid.arrange(a0, a1, a3, a2, nrow=4)
-grid.arrange(a0, a1, a3, nrow=3)
+ggarrange(a0, a1, a3, nrow=3, common.legend = T, legend='top')
 
 # Mean fresh weight
 co.response.mw$diff <- co.response.mw$y - co.response.mw$percent_predict
@@ -1511,13 +1705,356 @@ a4 <- ggplot(co.response.mw, aes(x=x1, y=diff)) +
   scale_fill_manual(labels = c('Significant', 'Non-significant'), values=c('tomato2', 'turquoise3')) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + labs(fill='Difference')+
   ylab('Difference') + xlab('') +
-  ggtitle('D. Observed nodule mean weight - Expected nodule mean weight')
+  ggtitle('D. Observed nodule mean weight - Expected nodule mean weight') +
+  theme(plot.title = element_text(face = "bold")) 
 
 
 grid.arrange(a0, a1, a3, a4,  nrow=4)
 
+########################
+# Peer-review analysis #
+########################
 
-# Summarize observed-expected difference
+# total biomass
+harvest$total_biomass <- harvest$root_mass + harvest$root_mass
+
+# total nodule biomass
+harvest$total_nodmass <- harvest$mean_weight*harvest$total_nodules
+
+# per nodule biomass
+harvest$per_nod_benefit <- harvest$ShootRG/harvest$total_nodules
+
+treated <- harvest %>%
+  filter(treatment != "H2O") %>%
+  droplevels(.)
+
+## rename Fix treatment
+treated$type <- ifelse(treated$Fix == "+", "Single_Effective", 
+                       ifelse(treated$Fix == "-", "Single_Ineffective",
+                              ifelse(treated$Fix == "+/+", "Co_Effective",
+                                     ifelse(treated$Fix == "+/-", "Co_Mixed",
+                                            "Co_Ineffective"))))
+
+treated$type <- factor(treated$type, levels = c("Single_Effective", "Co_Effective",
+                                                "Co_Mixed", "Single_Ineffective", "Co_Ineffective"))
+
+### correlation between shoot_mass and total nodule weight
+ggplot(treated, aes(x=total_nodules, y = ShootRG)) +
+  geom_point(aes(color = type)) +
+  geom_smooth(method="lm", formula = "y~x")
+
+### get residuals
+lm <- lm(log(ShootRG) ~ total_nodules*type, data = treated)
+summary(lm) ## sig
+aov <- aov(lm)
+summary(aov)
+
+
+
+res_investment <- as.data.frame(lm$residuals)
+res_investment$ID <- row.names(res_investment)
+colnames(res_investment) <- c("res","ID")
+
+### add residuals to master
+treated$ID <- row.names(treated)
+treated <- left_join(treated, res_investment, by = "ID")
+
+## correlations between shoot_mass and all other traits
+traits <- c("root_mass","shoot_mass", "total_nodules", "mean_weight",
+            "RG","ShootRG","investment","AreaMM","dryMass","total_biomass",
+            "total_nodmass","res","per_nod_benefit")
+
+## gather traits to be correlated
+corrs <- treated %>%
+  select(treatment, plant_id, all_of(traits)) %>%
+  gather(., "trait", "value", -treatment, -ShootRG, -plant_id)
+
+ggplot(corrs, aes(x=value, y = ShootRG)) +
+  geom_point() +
+  geom_smooth(method = "loess", formula = "y~x") +
+  facet_wrap(~trait, scales = "free_x") +
+  theme_bw()
+
+## filter to just single inoculation treatments
+single <- treated %>%
+  filter(treatment %in% c("131", "156", "4", "184", 
+                          "186", "187", "2", "200")) %>%
+  droplevels(.)
+
+### reorder treatments
+single$treatment <- factor(single$treatment, 
+                           levels = c("131", "156", "4", "184", 
+                                      "186", "187", "2", "200")
+)
+
+### corrplot between relative shoot growth and total nodule mass
+ggplot(single, aes(x=total_nodules, y = log(ShootRG), color = treatment)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = "y~x", size = 2) +
+  theme_bw()
+
+### corrplot between relative shoot growth and total nodule mass
+ggplot(single, aes(x=total_nodmass, y = log(ShootRG), color = treatment)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = "y~x", size = 2) +
+  theme_bw()
+
+### ANCOVA
+lm <- lm(log(ShootRG) ~ total_nodules*treatment, data = single)
+lm_sum <- summary(lm)
+(aov <- Anova(lm, type = 3)) ## sig
+
+## specify traits
+traits <- c("root_mass","shoot_mass", "total_nodules", "mean_weight",
+            "RG","ShootRG","investment","AreaMM","dryMass","total_biomass",
+            "total_nodmass")
+
+### get means
+single_sum <- single %>%
+  group_by(treatment) %>%
+  summarize_at(traits, mean, na.rm = TRUE)
+
+## calculate benefit per nod
+single_sum$per_nod_benefit <- single_sum$ShootRG/single_sum$total_nodules
+
+## quick graph
+ggplot(single_sum, aes(x=reorder(treatment, per_nod_benefit, median),
+                       y = per_nod_benefit)) +
+  geom_bar(stat = "identity")
+
+## add in slopes
+all_coef <- as.data.frame(lm_sum$coefficients)
+treatment <- single_sum$treatment
+###
+treat131 <- all_coef["total_nodules","Estimate"]
+treat156 <- all_coef["total_nodules","Estimate"] + 
+  all_coef["total_nodules:treatment156","Estimate"]
+treat4 <- all_coef["total_nodules","Estimate"] + 
+  all_coef["total_nodules:treatment4","Estimate"]
+treat184 <- all_coef["total_nodules","Estimate"] + 
+  all_coef["total_nodules:treatment184","Estimate"]
+treat186 <- all_coef["total_nodules","Estimate"] + 
+  all_coef["total_nodules:treatment186","Estimate"]
+treat187 <- all_coef["total_nodules","Estimate"] + 
+  all_coef["total_nodules:treatment187","Estimate"]
+treat2 <- all_coef["total_nodules","Estimate"] + 
+  all_coef["total_nodules:treatment2","Estimate"]
+treat200 <- all_coef["total_nodules","Estimate"] + 
+  all_coef["total_nodules:treatment200","Estimate"]
+slopes <- c(treat131, treat156, treat4, treat184,
+            treat186, treat187, treat2, treat200)
+
+single_sum$slopes <- slopes
+
+## specify
+traits <- c("root_mass","shoot_mass", "total_nodules", "mean_weight",
+            "RG","ShootRG","investment","AreaMM","dryMass","total_biomass",
+            "total_nodmass")
+
+## gather traits
+treated.l <- treated %>%
+  select(type, plant_id, treatment, all_of(traits)) %>%
+  gather(., "trait", "value", -type, -plant_id, -treatment)
+
+## plot of all traits
+ggplot(treated.l, aes(x=type, y = value)) +
+  geom_boxplot() +
+  geom_jitter(aes(color = treatment)) +
+  facet_wrap(~trait, scales = "free_y") +
+  theme_bw() +
+  guides(color = "none") +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)
+  )
+
+## test whether shootRG is highest in + vs +/-
+lm <- lm(log(ShootRG) ~ type, data = treated)
+aov <- aov(lm)
+summary(aov)
+TukeyHSD(aov)
+
+## test whether total_nodules is highest in + vs +/-
+lm <- lm(sqrt(total_nodules) ~ type, data = treated)
+aov <- aov(lm)
+summary(aov)
+TukeyHSD(aov)
+
+## plot of shootRG and total_nodles
+p <- ggplot(treated.l %>% filter(trait %in% c("ShootRG","total_nodules")), 
+            aes(x=type, y = value)) +
+  geom_boxplot() +
+  geom_jitter(aes(color = treatment)) +
+  facet_wrap(~trait, scales = "free_y") +
+  theme_bw() +
+  guides(color = "none") +
+  theme(
+    axis.text.x = element_text(angle = 25, hjust = 0.5, vjust = 0.5)
+  )
+
+#save(single_sum, file = "./single_sum.Rdata")
+
+### corrplot between relative shoot growth and total nodule mass
+ggplot(single_sum, aes(x=total_nodmass, y = log(ShootRG))) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = "y~x", size = 2) +
+  theme_bw()
+
+## Nodule occupancy freq
+nod_occ <- read_csv('../data/competition_abundance.csv')
+
+## total nodules
+nod_occ$total_nods <- rowSums(nod_occ[,c("A","B","A+B")], na.rm = TRUE)
+
+## make dup treatment
+nod_occ$treatment2 <- nod_occ$treatment
+
+## split strains
+nod_occ <- nod_occ %>%
+  separate(treatment2, c("strain_A", "strain_B"))
+
+## replaces NAs with zeros
+nod_occ <- replace(nod_occ, is.na(nod_occ), 0)
+
+## frequency
+nod_occ <- nod_occ %>%
+  rowwise() %>%
+  mutate(prop_A_single = (A/total_nods),
+         prop_A_mixed = `A+B`/(2*total_nods),
+         fA = prop_A_single + prop_A_mixed,
+         fB = 1 - fA)
+
+head(nod_occ)
+
+## filter to co-inoculation treatments
+mixed <- treated %>%
+  filter(!treatment %in% c("131", "156", "4", "184", 
+                           "186", "187", "2", "200")) %>%
+  droplevels(.)
+
+### add in fA and fB given treatments
+mixed <- left_join(mixed, nod_occ[,c("strain_A", "strain_B", "fA","fB","treatment")], 
+                   by = "treatment")
+
+### expect values from single inoculation
+mixed$exp_strain_A <- single_sum$ShootRG[match(mixed$strain_A, 
+                                               single_sum$treatment)]
+mixed$exp_strain_B <- single_sum$ShootRG[match(mixed$strain_B, 
+                                               single_sum$treatment)]
+
+### calculate according to their paper
+mixed$exp <- ((mixed$exp_strain_A)*(mixed$fA)) + ((mixed$exp_strain_B)*(mixed$fB))
+
+### t.test for each treatment separately
+treat.list <- unique(mixed$treatment)
+
+t.test_fun <- function(treat, df){
+  
+  ## filter for each treatment
+  mixed_treat <- df %>%
+    filter(treatment %in% treat) %>%
+    droplevels(.)
+  
+  predicted <- mean(mixed_treat$exp, na.rm = TRUE)
+  
+  ttest <- t.test(mixed_treat$ShootRG, mu = predicted)
+  
+  return(ttest)
+}
+
+out <- sapply(treat.list, FUN = t.test_fun, df = mixed,
+              simplify = FALSE, USE.NAMES = TRUE)
+
+### expect values from single inoculation
+mixed$exp2_strain_A <- single_sum$per_nod_benefit[match(mixed$strain_A, 
+                                                        single_sum$treatment)]
+mixed$exp2_strain_B <- single_sum$per_nod_benefit[match(mixed$strain_B, 
+                                                        single_sum$treatment)]
+
+### total nodules of each strain
+mixed$total_nods_A <- mixed$fA * mixed$total_nodules
+mixed$total_nods_B <- mixed$fB * mixed$total_nodules
+
+### calculate according to per benefit 
+# Proposed by reviewr 3
+mixed$exp2 <- ((mixed$exp2_strain_A)*(mixed$total_nods_A)) + ((mixed$exp2_strain_B)*(mixed$total_nods_B))
+
+## compare graphically
+mixed.l <- mixed %>%
+  select(ShootRG, exp, exp2, treatment) %>%
+  gather(., method, value, -treatment, -ShootRG)
+
+p0 <- ggplot(mixed.l[which(mixed.l$method=='exp'),], aes(x=value, y = ShootRG, color = method)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = "y~x") +
+  geom_abline(slope = 1, intercept = 0, linetype = 2) +
+  scale_color_discrete(breaks = c("exp","exp2"),
+                       labels = c("Model I",
+                                  "Model II")) +
+  ylab("Observed relative shoot growth") +
+  xlab("Expected relative shoot growth") +
+  theme_bw() + theme(legend.title=element_blank()) 
+
+p <- ggplot(mixed.l, aes(x=value, y = ShootRG, color = method)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = "y~x") +
+  geom_abline(slope = 1, intercept = 0, linetype = 2) +
+  scale_color_discrete(breaks = c("exp","exp2"),
+                       labels = c("Model I",
+                                  "Model II")) +
+  ylab("Observed relative shoot growth") +
+  xlab("Expected relative shoot growth") +
+  theme_bw() + theme(legend.title=element_blank()) 
+
+## compare fit
+lm <- lm(ShootRG ~ value*method, data = mixed.l)
+summary(lm)
+
+lma <- lm(ShootRG ~ exp, data = mixed)
+summary(lma) ## Adjusted R-squared:  0.06295 
+
+lmb <- lm(ShootRG ~ exp2, data = mixed)
+summary(lmb) ## Adjusted R-squared:  0.6824 
+
+## compare among coinoculation treatments for exp2 (by the reviewer)
+ggplot(mixed, aes(x=exp2, y = ShootRG, color = type)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = "y~x") +
+  geom_abline(slope = 1, intercept = 0, linetype = 2) +
+  ylab("Predicted relative shoot growth") +
+  xlab("Observed relative shoot growth")
+
+
+lmc <- lm(ShootRG ~ exp2*type, data = mixed)
+summary(lmc) ## sig less than 1, but treatments are not sig different
+
+## compare among approaches
+
+## compare graphically
+mixed.l <- mixed %>%
+  select(ShootRG, exp, exp2, treatment) %>%
+  gather(., method, value, -treatment)
+
+p <- ggplot(mixed.l, aes(x=method, y = value)) +
+  geom_boxplot() +
+  geom_jitter() +
+  scale_x_discrete(breaks = c("ShootRG","exp","exp2"),
+                   labels = c("Obsesrved values",
+                              "Current expected values",
+                              "Alternative expected values")) +
+  xlab("Comparisons") +
+  ylab("Relative shoot growth") +
+  theme_bw()
+
+
+lm <- lm(sqrt(value) ~ method, data = mixed.l)
+aov <- aov(lm)
+summary(aov)
+TukeyHSD(aov)
+
+
+##########################################
+# Summarize observed-expected difference #
+##########################################
 rgdiff <- a0$data[,c('x1', 'diff', 'percent_pvalue')]
 noddiff <- a1$data[,c('x1', 'diff', 't_p_percent')]
 nodareadiff <- a3$data[,c('x1', 'diff', 't_p_percent')]
