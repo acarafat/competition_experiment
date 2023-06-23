@@ -531,7 +531,7 @@ rg_sig <- data.frame(treatment=c('131','184','4','156','2','186','200','187'),
 q1 <- q0 + 
   geom_beeswarm(data=single.nod, aes(x=treatment, y=RG),size=1, alpha=0.3) +
   geom_hline(yintercept = 1, color='blue1') + 
-  ggtitle('A. Host Growth Benefit')+  ylab('Shoot RG') + xlab('Treatment') + 
+  ggtitle('A')+  ylab('Shoot RG') + xlab('Treatment') + 
   geom_text(data=rg_sig, aes(x=treatment, y=rg, label=sig), col='#8b0000', vjust= -0.05) +
   theme_bw() + theme(plot.title = element_text(face = "bold")) +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
@@ -540,7 +540,7 @@ q1 <- q0 +
 
 q2 <- response.plot(single.nod, 'total_nodules', 'treatment', 'ShootRG', 'Fix') + 
   geom_beeswarm(data=single.nod, aes(x=treatment, y=total_nodules),size=1, alpha=0.3) +
-  ggtitle('B. Nodules Per Plant') + ylab('Average Nodules') + xlab('Treatment') + theme_bw() +
+  ggtitle('B') + ylab('Average Nodules') + xlab('Treatment') + theme_bw() +
   theme(plot.title = element_text(face = "bold")) +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
@@ -548,7 +548,7 @@ q2 <- response.plot(single.nod, 'total_nodules', 'treatment', 'ShootRG', 'Fix') 
 
 q3 <- response.plot(single.nod, 'mean_weight', 'treatment', 'ShootRG', 'Fix') + 
   geom_beeswarm(data=single.nod, aes(x=treatment, y=mean_weight),size=1, alpha=0.3) +
-  ggtitle('C. Mean Fresh Nodule Biomass') + ylab('Mean Weight (mg)') + xlab('Treatment') + theme_bw() +
+  ggtitle('C') + ylab('Mean Weight (mg)') + xlab('Treatment') + theme_bw() +
   theme(plot.title = element_text(face = "bold")) +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
@@ -556,7 +556,7 @@ q3 <- response.plot(single.nod, 'mean_weight', 'treatment', 'ShootRG', 'Fix') +
 
 q4 <- response.plot(single.nod, 'investment', 'treatment', 'ShootRG', 'Fix') + 
   geom_beeswarm(data=single.nod, aes(x=treatment, y=investment),size=1, alpha=0.3) +
-  ggtitle('D. Investment to Nodulation') + ylab('Nodule Biomass / Shoot Biomass') + xlab('Treatment') + theme_bw() +
+  ggtitle('D') + ylab('Nodule Biomass / Shoot Biomass') + xlab('Treatment') + theme_bw() +
   theme(plot.title = element_text(face = "bold")) +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
@@ -639,7 +639,7 @@ coinoc_rg <- data.frame(signf <- c('•', '*', '•', '*', '*', '*', '*', '*', '
 
 p1 <- p0 + 
   geom_beeswarm(data=coinoc.nod, aes(x=treatment, y=ShootRG), size=1, alpha=0.3) +
-  geom_hline(yintercept = 1, color='blue1') + ggtitle('A. Host Growth Benefit') + xlab('Treatment') + ylab('Shoot RG') +
+  geom_hline(yintercept = 1, color='blue1') + ggtitle('A') + xlab('Treatment') + ylab('Shoot RG') +
   geom_text(data=coinoc_rg, aes(y=y, x=treatment, label=signf), col='#8b0000', vjust= -0.25) +
   theme_bw() + theme(plot.title = element_text(face = "bold")) +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
@@ -648,7 +648,7 @@ p1 <- p0 +
   scale_fill_manual(values=c('#228B22', '#0096FF', '#F8766D'))
 p2 <- response.plot(coinoc.nod, 'total_nodules', 'treatment', 'ShootRG', 'Fix') +
   geom_beeswarm(data=coinoc.nod, aes(x=treatment, y=total_nodules), size=1, alpha=0.3) +
-  ggtitle('B. Nodules Per Plant')  + xlab('Treatment') +
+  ggtitle('B')  + xlab('Treatment') +
   ylab('Average Nodules') + theme_bw() +
   theme(plot.title = element_text(face = "bold")) +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
@@ -658,7 +658,7 @@ p2 <- response.plot(coinoc.nod, 'total_nodules', 'treatment', 'ShootRG', 'Fix') 
 
 p3 <- response.plot(coinoc.nod, 'mean_weight', 'treatment', 'ShootRG', 'Fix') +
   geom_beeswarm(data=coinoc.nod, aes(x=treatment, y=mean_weight), size=1, alpha=0.3) +
-  ggtitle('C. Mean Fresh Nodule Biomass')  + xlab('Treatment') +
+  ggtitle('C')  + xlab('Treatment') +
   scale_y_break(breaks = c(8, 18)) +
   ylab('Mean Weight (mg)') + theme_bw() +
   theme(plot.title = element_text(face = "bold")) +
@@ -670,7 +670,7 @@ p3 <- response.plot(coinoc.nod, 'mean_weight', 'treatment', 'ShootRG', 'Fix') +
 
 p4 <- response.plot(coinoc.nod, 'investment', 'treatment', 'ShootRG', 'Fix') +
   geom_beeswarm(data=coinoc.nod, aes(x=treatment, y=investment), size=1, alpha=0.3) +
-  ggtitle('D. Investment to Nodulation')  +
+  ggtitle('D')  +
   ylab('Nodule Biomass / Shoot Biomass') + xlab('Treatment') + theme_bw() +
   theme(plot.title = element_text(face = "bold")) +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
@@ -720,7 +720,7 @@ ggplot(group.heatmap, aes(y=factor(variable, level=variable_order), x=Treatment,
   scale_fill_gradient2(low = "#075AFF",
                        mid = "#FFFFCC",
                        high = "#FF0000") +
-  ggtitle('E. Heatmap Comparison of Response Variables') +
+  ggtitle('E') +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1), 
         strip.text.x = element_text(size = 14)) +
   theme(plot.title = element_text(face = "bold")) +
@@ -764,38 +764,52 @@ ggarrange(p1s, p2s, p3s, p4s, nrow=2, ncol=2, common.legend = T, legend='top')
 
 # t-test
 # Main result figure
-compare_means(y~f, data=p1$data)
+t_test_comparison.q1 <- compare_means(y~f, data=p1$data)
+t_test_comparison.q1 <- t_test_comparison.q1 %>% mutate(y.position=c(4.5, 5, 5.5))
 
 q1 <- ggbarplot(p1$data, x='f', y='y', fill='f', add='mean_se') +
-  stat_compare_means(method='t.test', comparisons= list(c('Fix+/Fix+', 'Fix+/Fix-'),
-                                                        c('Fix+/Fix+', 'Fix-/Fix-'),
-                                                        c('Fix+/Fix-', 'Fix-/Fix-'))) +
-  theme(legend.position='none', legend.title=element_blank()) +
-  xlab('Strain Fix Trait Combinations') + ylab('Shoot RG') + ggtitle('A. Host Growth Benefit') +
+  stat_pvalue_manual(t_test_comparison.q1, label="p.adj") +
+  #stat_compare_means(method='t.test', comparisons= list(c('Fix+/Fix+', 'Fix+/Fix-'),
+  #                                                      c('Fix+/Fix+', 'Fix-/Fix-'),
+  #                                                      c('Fix+/Fix-', 'Fix-/Fix-'))) +
+  theme(legend.position='none', legend.title=element_blank(), plot.title=element_text(face="bold")) +
+  xlab('Strain Fix Trait Combinations') + ylab('Shoot RG') + ggtitle('A') +
   scale_fill_manual(values=c('#00BA38', '#619CFF', '#F8766D'))
+
+t_test_comparison.q2 <- compare_means(y~f, method='t.test', data=p2$data)
+t_test_comparison.q2 <- t_test_comparison.q2 %>% mutate(y.position=c(25, 28, 31))
 
 q2 <- ggbarplot(p2$data, x='f', y='y', fill='f', add='mean_se') + 
-  stat_compare_means(method='t.test', comparisons= list(c('Fix+/Fix+', 'Fix+/Fix-'),
-                                                        c('Fix+/Fix+', 'Fix-/Fix-'),
-                                                        c('Fix+/Fix-', 'Fix-/Fix-'))) +
-  theme(legend.position='none', legend.title=element_blank()) +
-  xlab('Strain Fix Trait Combinations') + ylab('Total Nodules') + ggtitle('B. Nodulation') +
+  stat_pvalue_manual(t_test_comparison.q2, label="p.adj") +
+  #stat_compare_means(method='t.test', comparisons= list(c('Fix+/Fix+', 'Fix+/Fix-'),
+  #                                                      c('Fix+/Fix+', 'Fix-/Fix-'),
+  #                                                      c('Fix+/Fix-', 'Fix-/Fix-'))) +
+  theme(legend.position='none', legend.title=element_blank(), plot.title=element_text(face="bold")) +
+  xlab('Strain Fix Trait Combinations') + ylab('Total Nodules') + ggtitle('B') +
   scale_fill_manual(values=c('#00BA38', '#619CFF', '#F8766D'))
+
+t_test_comparison.q3 <- compare_means(y~f, data=p3$data)
+t_test_comparison.q3 <- t_test_comparison.q3 %>% mutate(y.position=c(2.3, 2.6, 3.1))
 
 q3 <- ggbarplot(p3$data, x='f', y='y', fill='f', add='mean_se') + 
-  stat_compare_means(method='t.test', comparisons= list(c('Fix+/Fix+', 'Fix+/Fix-'),
-                                                        c('Fix+/Fix+', 'Fix-/Fix-'),
-                                                        c('Fix+/Fix-', 'Fix-/Fix-'))) +
-  theme(legend.position='none', legend.title=element_blank()) +
-  xlab('Strain Fix Trait Combinations') + ylab('Nodule Weight  (mg)') + ggtitle('C. Mean Fresh Nodule Biomass') +
+  stat_pvalue_manual(t_test_comparison.q3, label="p.adj") +
+  #stat_compare_means(method='t.test', comparisons= list(c('Fix+/Fix+', 'Fix+/Fix-'),
+  #                                                      c('Fix+/Fix+', 'Fix-/Fix-'),
+  #                                                      c('Fix+/Fix-', 'Fix-/Fix-'))) +
+  theme(legend.position='none', legend.title=element_blank(), plot.title=element_text(face="bold")) +
+  xlab('Strain Fix Trait Combinations') + ylab('. Mean Fresh Nodule Biomass (mg)') + ggtitle('C') +
   scale_fill_manual(values=c('#00BA38', '#619CFF', '#F8766D'))
 
+t_test_comparison.q4 <- compare_means(y~f, data=p4$data)
+t_test_comparison.q4 <- t_test_comparison.q4 %>% mutate(y.position=c(1.4, 1.7, 2))
+
 q4 <- ggbarplot(p4$data, x='f', y='y', fill='f', add='mean_se') +  
-  stat_compare_means(method='t.test', comparisons= list(c('Fix+/Fix+', 'Fix+/Fix-'),
-                                                        c('Fix+/Fix+', 'Fix-/Fix-'),
-                                                        c('Fix+/Fix-', 'Fix-/Fix-'))) +
-  theme(legend.position='none', legend.title=element_blank()) +
-  xlab('Strain Fix Trait Combinations') + ylab('Investment') + ggtitle('D. Investment to Nodulation') +
+  stat_pvalue_manual(t_test_comparison.q4, label="p.adj") +
+  #stat_compare_means(method='t.test', comparisons= list(c('Fix+/Fix+', 'Fix+/Fix-'),
+  #                                                      c('Fix+/Fix+', 'Fix-/Fix-'),
+  #                                                      c('Fix+/Fix-', 'Fix-/Fix-'))) +
+  theme(legend.position='none', legend.title=element_blank(), plot.title=element_text(face="bold")) +
+  xlab('Strain Fix Trait Combinations') + ylab('Investment to Nodulation') + ggtitle('D') +
   scale_fill_manual(values=c('#00BA38', '#619CFF', '#F8766D'))
 
   
@@ -1593,7 +1607,7 @@ grid.arrange(p1, p2, p3, p4, nrow=2)
 ###########################################
 # Compare observed vs expected difference #
 ###########################################
-# Main figure
+# Main result figure
 co.response.rg$diff <- co.response.rg$y - co.response.rg$percent_predict
 co.response.rg$x1 <- factor(co.response.rg$x1, levels=c('4+200', '186+4', '187+200', '4+187', 
                                                      '2+187', '186+187', '187+184', '186+200', 
@@ -1612,8 +1626,8 @@ a0 <- ggplot(co.response.rg[which(co.response.rg$x1 != '131+156'),], aes(x=x1, y
   scale_fill_manual(labels = c("Fix+/Fix+", "Fix+/Fix-", "Fix-/Fix-"), values=c('#228B22', '#0096FF', '#F8766D')) +
   #scale_fill_manual(labels = c('Suboptimal', 'Optimal'), values=c('tomato2', 'turquoise3')) +
   labs(fill='Performance')+
-  ylab('Difference') + xlab('Treatments') +
-  ggtitle('A. Observed Shoot RG - Expected Shoot RG') + theme_bw() + theme(legend.position='none') +
+  ylab('Shoot RG Difference') + xlab('Treatments') +
+  ggtitle('A') + theme_bw() + theme(legend.position='none') +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
   theme(plot.title = element_text(face = "bold")) 
@@ -1635,8 +1649,8 @@ a1 <- ggplot(co.response.nod[which(co.response.nod$x1 != '131+156'),], aes(x=x1,
   geom_text(aes(label=ifelse(t_p_percent <= 0.05, '*', '')),color='red', position = position_dodge(width = .9), vjust = 1, size = 20 / .pt) +
   scale_fill_manual(labels = c("Fix+/Fix+", "Fix+/Fix-", "Fix-/Fix-"), values=c('#228B22', '#0096FF', '#F8766D')) +
   labs(fill='Difference')+
-  ylab('Difference') + xlab('Treatments') +
-  ggtitle('B. Observed total nodules - Expected total nodules') + theme_bw() + theme(legend.position='none') +
+  ylab('Nodule Number Difference') + xlab('Treatments') +
+  ggtitle('B') + theme_bw() + theme(legend.position='none') +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
   theme(plot.title = element_text(face = "bold")) 
@@ -1680,8 +1694,8 @@ a3 <- ggplot(co.response.area[which(co.response.area$x1 != '131+156'),], aes(x=x
   geom_errorbar(aes(ymin=diff - t_confint_percent, ymax= diff + t_confint_percent), width=.2, colour='grey') +
   geom_text(aes(label=ifelse(t_p_percent <= 0.05, '*', '')),color='red', position = position_dodge(width = .9), vjust = 1, size = 20 / .pt) +
   scale_fill_manual(labels = c("Fix+/Fix+", "Fix+/Fix-", "Fix-/Fix-"), values=c('#228B22', '#0096FF', '#F8766D')) +
-  labs(fill='Difference')+ ylab('Difference') + xlab('Treatments') +
-  ggtitle('C. Observed nodule area - Expected nodule area')  + theme_bw() + theme(legend.position='none') +
+  labs(fill='Difference')+ ylab('Nodule Area Difference') + xlab('Treatments') +
+  ggtitle('C')  + theme_bw() + theme(legend.position='none') +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
   theme(plot.title = element_text(face = "bold")) 
