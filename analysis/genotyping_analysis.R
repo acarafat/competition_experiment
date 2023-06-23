@@ -95,12 +95,13 @@ ggplot(genoSummary[which(genoSummary$class != 'NA'),], aes(fill=class, x=treatme
   geom_text(aes(label=B, y=-0.04), color='#0072B5', angle=45) + 
   #scale_y_continuous(labels = scales::percent) +
   scale_y_continuous(labels=c('0%/100%', '25%/75%', '50%/50%', '75%/25%', '100%/0%'), breaks=c(0,0.25,0.50,0.75,1)) +
-  facet_grid(~fix_combination, scales="free_x", space='free_x')+
+  facet_grid(~factor(fix_combination, levels=c('+/+', '+/-', '-/-')), scales="free_x", space='free_x', ) +
   #scale_fill_discrete(name = "", labels = c("Strain A", "Coinfected", "Strain B"), values=c('#DD4444', 'grey', '#555599')) +
   theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), 
         strip.text.x = element_text(size = 14)) +
-  ggtitle('a. Proportion of nodules occupied by competing strains in coinoculation')
-
+  ggtitle('A') + 
+  theme(plot.title = element_text(face = "bold")) 
+  
 
 #theme(axis.text.x = element_blank()) 
 
@@ -110,6 +111,48 @@ abundance = dcast(abundance, treatment~class)
 
 #write.csv(abundance, file= '/Users/arafat/GDrive/Sachs/Chapter1_Competition/Competition Experiment/AmpliconSeq/Amplicon_Fragments/competition_abundanc.csv', row.names=F)
 
+
+##################################
+# Analysis of coinfected nodules #
+##################################
+genoSummary <- genoSummary[which(genoSummary$class != 'NA'),]
+genoSummary <- rbind(genoSummary, c('A+B', 131, 200, 0, '131+200', '+/-'))
+genoSummary <- rbind(genoSummary, c('A+B', 4, 200, 0, '4+200', '+/-'))
+
+total_nodules <- aggregate(as.numeric(genoSummary$count),  list(genoSummary$treatment), FUN=sum)
+colnames(total_nodules) <- c('treatment', 'total_nodules')
+
+
+#coinfected <- merge(coinfected, total_nodules, by='treatment')
+coinfected <- merge(genoSummary, total_nodules, by='treatment')
+coinfected$percent_coinfected <- (as.numeric(coinfected$count)/as.numeric(coinfected$total_nodules))*100
+coinfected <- coinfected[which(coinfected$class == 'A+B'),]
+
+
+
+ggplot(coinfected, aes(x=reorder(treatment, -percent_coinfected), y=percent_coinfected, fill=fix_combination)) + 
+  geom_bar(stat="identity") + theme(axis.text.x = element_text(angle = 45, vjust = 0.1, hjust=0.1)) +
+  xlab("Treatment") + ylab("% Coinfected nodules")
+
+# Categorizing and comparing by ++, +-, and --
+t_test_comparison <- compare_means(percent_coinfected~fix_combination, data=coinfected)
+t_test_comparison <- t_test_comparison %>% mutate(y.position=c(90, 100, 110))
+
+aggregate(percent_coinfected~fix_combination, data=coinfected, FUN=mean)
+aggregate(percent_coinfected~fix_combination, data=coinfected, FUN=se)
+
+ggbarplot(coinfected, x='fix_combination', y='percent_coinfected', fill='fix_combination', add='mean_se') +
+  stat_pvalue_manual(t_test_comparison, label="p.adj") +
+  scale_x_discrete(labels=c('Fix+/Fix+', 'Fix+/Fix-', 'Fix-/Fix-')) +
+  theme(plot.title = element_text(face = "bold"), legend.position='bottom', legend.title=element_blank()) +
+  xlab('') + ylab('% Coinfected nodules') + ggtitle('B') +
+  scale_fill_manual(values=c('#2E8B57', '#619CFF', '#F8766D')) 
+
+
+
+# Focusing only on strain 156
+
+# 200 can not coinfect against 4 ...
 
 ####################################  
 # Compare observed RG and expected #
@@ -158,8 +201,6 @@ genotype_subset <- function(base){
   
   return(subset)
 }
-
-
 
 
 plot_genotype_subset <- function(subset, base='', color_vector=c('#DD4444', 'grey', '#555599')){
@@ -297,38 +338,47 @@ Anova(lm(RO.value~fix, data=RO), type='II')
 compare_means(RO.value~fix, data=RO)
 
 # Main result figure
+
+
 b = ggplot(RO, aes(x=RO.names, y=dominance, fill=fix)) + geom_bar(stat='identity') +
-  xlab('Strain') + ylab('#Times dominant in coinoculation') + ggtitle('b. Dominant in #Treatments') + theme(legend.position='none') +
+  xlab('Strain') + ylab('#Times dominant in coinoculation') + ggtitle('C') + 
+  theme(legend.position='none') +
   theme_bw() + scale_fill_manual(values=c('#2E8B57', '#F8766D')) +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
-        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+theme(plot.title = element_text(face = "bold")) 
 
 
 c = ggplot(RO, aes(x=RO.names, y=RO.value, fill=fix)) + geom_bar(stat='identity') +
   geom_errorbar(aes(ymin=RO.value - RO.se, ymax=RO.value + RO.se), width=0.2) +
-  xlab('Strain') + ylab('Mean Count Value') + ggtitle('c. Mean Nodule Occupancy') + theme(legend.position='none') +
+  xlab('Strain') + ylab('Nodule Occupancy Mean Count Value') + ggtitle('D') + 
+  theme(legend.position='none') +
   #annotate('text', x='186', y=1, label='Wilcoxon p-value: 0.0286', col='blue') +
   theme_bw() + scale_fill_manual(values=c('#2E8B57', '#F8766D')) +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
-        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  theme(plot.title = element_text(face = "bold")) 
 
 d = ggplot(RO, aes(x=RO.names, y=nodule.value, fill=fix)) + geom_bar(stat='identity') +
   geom_errorbar(aes(ymin=nodule.value - nodule.se, ymax=nodule.value + nodule.se), width=0.2) +
-  xlab('Strain') + ylab('Mean Count Value') + ggtitle('d. Mean #Nodules') + theme(legend.position='none') +
+  xlab('Strain') + ylab('Nodule Mean Count Value') + ggtitle('E') + 
+  theme(legend.position='none') +
   theme_bw() + scale_fill_manual(values=c('#2E8B57', '#F8766D')) +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), 
-        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  theme(plot.title = element_text(face = "bold")) 
 
 e = ggplot(RO, aes(x=RO.names, y=RG.value, fill=fix)) + geom_bar(stat='identity') +
   geom_errorbar(aes(ymin=RG.value - RG.se, ymax=RG.value + RG.se), width=0.2) +
-  xlab('Strain') + ylab('Mean Count Value') + ggtitle('E. Mean Shoot RG') + theme(legend.position='none') +
+  xlab('Strain') + ylab('Shoot RG Mean Count Value') + ggtitle('F') + theme(legend.position='none') +
   theme_bw() + scale_fill_manual(values=c('#2E8B57', '#F8766D')) +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
-        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  theme(plot.title = element_text(face = "bold")) 
 
 
 
