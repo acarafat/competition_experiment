@@ -391,5 +391,3 @@ cfu[cfu < 50] <- cfu[cfu < 50]*a + b
 cfu <- cbind(data[1:3], cfu)
 
 head(cfu)
-
-
