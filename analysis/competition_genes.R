@@ -41,6 +41,7 @@ plotMatHeatmap <- function(matrix, title) {
 #pdf('/Users/arafat/GDrive/Sachs/Chapter1_Competition/Competition_study/Competition_genes/wheatley.pdf',
 #    width=25, height=20)
 plotMatHeatmap(matWheatley, '')
+plotMatHeatmap(matSuarez, '')
 #dev.off()
 
 plotMatHeatmap(matBacteroidSpecific, 'Bacteroid Specific')
